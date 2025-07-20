@@ -1,4 +1,4 @@
-import { Form } from "react-router-dom"
+import { Form, Navigate, useNavigate } from "react-router-dom"
 import  type {  CodeSnippet, CreateSnippetFormData } from "../type"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useInsertSnippet } from "../hooks/useSnippet";
@@ -12,33 +12,41 @@ type insertSnippetVar = Omit<CodeSnippet, 'id' | 'created_at' | 'embedding_vecto
 
 const {mutate:insertSnippetMutation} = useInsertSnippet();
   const [authLoading, setAuthLoading] = useState(true);
+  const navigate = useNavigate();
  const [userId, setUserId] = useState<string | undefined>();
+
+
   useEffect(() => {
     const getUserId = async () => {
       setAuthLoading(true);
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
-        setUserId(session.user.id);
+        setUserId(session.user.id);  //id is set here 
       } else {
-        console.warn("No active Supabase user session found.");
+        console.warn("No active Supabase user session found during initial fetch.");
+        setUserId(undefined); 
       }
       setAuthLoading(false);
     };
 
     getUserId();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserId(session?.user?.id || null);
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {  //is it a convention to use underscore as  prefix while naming event 
+      setUserId(session?.user?.id || undefined);
     });
 
     return () => {
-      authListener?.unsubscribe();
+      authListener?.subscription?.unsubscribe();
     };
   }, []);
 
 
 const onSubmit: SubmitHandler<CreateSnippetFormData>= (data)=>{
- 
+  if (userId === undefined) {
+      alert("Please log in to create a snippet.");
+      navigate('/login');
+      return; 
+    }
 
     const snippetToInsert:insertSnippetVar  = {
       title: data.title,
@@ -46,7 +54,7 @@ const onSubmit: SubmitHandler<CreateSnippetFormData>= (data)=>{
       language: data.language,
       description: data.description === '' ? undefined : data.description,
       tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : [], 
-      user_id: userId,
+      user_id: userId ,
       is_pinned: false, 
       
     };

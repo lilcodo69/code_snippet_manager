@@ -31,7 +31,7 @@ const SnippetList = () => {
         });
 
         return () => {
-            authListener?.unsubscribe();
+            authListener?.subscription.unsubscribe();
         };
     }, []);
 

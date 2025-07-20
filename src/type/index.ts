@@ -10,7 +10,7 @@ title: string,
 code: string,
 
 language:string,
-user_id: string ,
+user_id: string |undefined,
 
 description? :string,
 tags?:string[],

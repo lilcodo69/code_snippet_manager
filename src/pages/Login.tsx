@@ -1,18 +1,20 @@
 import { useNavigate } from "react-router-dom";
+
 import { supabase } from "../supabaseClient";
 import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 
 
 
 const Login=()=>{
 const navigate = useNavigate();
 
-const [sesssion, setSesssion] = useState<any>(null);
+const [session, setSesssion] = useState<Session |null>(null);
 
 
 useEffect(()=>{
 
-    supabase.auth.getSession.then(({data:{session}})=>{
+    supabase.auth.getSession().then(({data:{session}})=>{
         setSesssion(session);
 
         if(session){
@@ -30,24 +32,31 @@ useEffect(()=>{
     })
 
      return () => {
-      authListner.unsubscribe();
+      authListner.subscription.unsubscribe();
     };
 },[navigate]);
 
 
 
- const signInWithOAuth = async (provider: 'google' | 'github') => {
+ const signInWithOAuth = async (provider: 'google' | 'github') => { //  string can only be either the exact literal string 'google' or the exact literal string 'github'
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: window.location.origin, // Redirects back to your app's root URL
+          redirectTo: window.location.origin, 
         },
       });
       if (error) throw error;
-    } catch (error: any) {
-      console.error('Error signing in:', error.message);
-      alert(`Error signing in: ${error.message}`);
+    } catch (error:unknown ) {
+
+      if(error instanceof Error){
+        console.log("Error signing in :", error.message);
+            alert(`Error signing in: ${error.message}`);
+      }
+else{
+     console.error('An unexpected error occurred during sign-in:', error);
+        alert('An unexpected error occurred during sign-in.');
+}
     }
   };
 
@@ -58,9 +67,17 @@ useEffect(()=>{
       if (error) throw error;
       alert('Logged out successfully!');
       navigate('/login'); 
-    } catch (error: any) {
-      console.error('Error logging out:', error.message);
-      alert(`Error logging out: ${error.message}`);
+    } catch (error: unknown) {
+if (error instanceof Error) {
+        console.error('Error signing out:', error.message);
+        alert(`Error signing in: ${error.message}`);
+      } 
+
+else{
+ console.error('An unexpected error occurred during logout:', error);
+        alert('An unexpected error occurred during logout.');
+}
+      
     }
   };
 
