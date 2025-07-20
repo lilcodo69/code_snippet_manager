@@ -1,9 +1,10 @@
-import { CodeSnippet } from "../type/index";
+import type{ CodeSnippet } from "../type/index";
 
 interface SnippetCardProps {
   snippet: CodeSnippet;
   onPin: (id: string) => void;     
   onDelete: (id: string) => void; 
+  onEdit: (snippet: CodeSnippet) => void;
 }
 
 export const SnippetCard = ({ snippet,onDelete,onPin }: SnippetCardProps) => {
@@ -27,6 +28,13 @@ export const SnippetCard = ({ snippet,onDelete,onPin }: SnippetCardProps) => {
         </p>
 
 <div className="flex gap-2 mt-2">
+
+    <button
+          onClick={() => onEdit(snippet)} 
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+Edit
+        </button>
   <button 
     onClick={() => onPin(snippet.id)}
     className="px-3 py-1 bg-blue-500 text-white rounded"

@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 
 import Login from './pages/Login'
 import Layout from './components/Layout'
-import { CreateSnippetForm } from './components/CreateSnippetForm';
+import { CreateSnippetForm } from './components/SnippetForm';
 import AuthLayout from './components/AuthLayout';
 
 function App() {

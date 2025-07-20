@@ -1,11 +1,11 @@
-import { Form, Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import  type {  CodeSnippet, CreateSnippetFormData } from "../type"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { useInsertSnippet } from "../hooks/useSnippet";
 import { supabase } from "../supabaseClient";
 import { useEffect, useState } from "react";
 
-export const CreateSnippetForm=()=>{
+export const SnippetForm=()=>{
 
  const {register,handleSubmit,reset,formState:{errors,isSubmitting}} = useForm<CreateSnippetFormData>();
 type insertSnippetVar = Omit<CodeSnippet, 'id' | 'created_at' | 'embedding_vectors'>;
