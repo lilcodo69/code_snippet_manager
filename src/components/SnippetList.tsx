@@ -77,7 +77,7 @@ const SnippetList = () => {
             }
             return result.data || [];
         },
-        enabled: !!currentUserId && !authLoading, // Only run query if user ID exists and auth is not loading
+        enabled: !!currentUserId && !authLoading, 
     });
 
     if (authLoading) {
@@ -108,7 +108,6 @@ const SnippetList = () => {
                         >
                             &times; {/* HTML entity for 'x' mark */}
                         </button>
-                        {/* Assuming SnippetForm is the SnippetForm component, renamed for clarity or you have a separate edit form */}
                         <SnippetForm initialSnippet={editingSnippet} onClose={handleCloseEdit} />
                     </div>
                 </div>
@@ -127,7 +126,7 @@ const SnippetList = () => {
                             />
                         ))}
                     </>
-                ) : ( // Use standard else block syntax for JSX
+                ) : ( 
                     <p className="text-gray-400 text-center">No snippets to show for your account yet. Create one!</p>
                 )}
             </div>

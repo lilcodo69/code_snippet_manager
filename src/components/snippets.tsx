@@ -7,7 +7,7 @@ interface SnippetCardProps {
   onEdit: (snippet: CodeSnippet) => void;
 }
 
-export const SnippetCard = ({ snippet,onDelete,onPin }: SnippetCardProps) => {
+export const SnippetCard = ({ snippet,onDelete,onPin,onEdit  }: SnippetCardProps) => {
 
 
   
