@@ -1,28 +1,29 @@
-// src/components/SnippetForm.tsx
-import React, { useState, useEffect } from 'react'; 
-import{  useForm, type SubmitHandler }  from "react-hook-form";
+
+import React from 'react';
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { CodeSnippet, CreateSnippetFormData } from "../type";
-import { useInsertSnippet, useUpdateSnippet } from "../hooks/useSnippet";
-import { supabase } from "../supabaseClient"
-import type { Session } from '@supabase/supabase-js';
+
+import { useInsertSnippet } from "../hooks/useInsertSnippet";
+import { useUpdateSnippet } from "../hooks/useUpdateSnippet";
+import { useAuth } from '../context/AuthContext';
 
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet; 
-  onClose: () => void; 
+  onClose?: () => void; 
 }
-
 type InsertSnippetPayload = Omit<CodeSnippet, 'id' | 'created_at' | 'embedding_vectors'>;
-type UpdateSnippetPayload = { id: string, updates: Partial<CodeSnippet> };
 
 export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClose }) => { 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setValue } = useForm<CreateSnippetFormData>({
+  const { user } = useAuth();
+
+  const { register, handleSubmit, reset, formState: { errors ,isSubmitting }  } = useForm<CreateSnippetFormData>({
     defaultValues: initialSnippet ? {
       title: initialSnippet.title,
       code: initialSnippet.code,
       language: initialSnippet.language,
       description: initialSnippet.description,
-      tags: initialSnippet.tags?.join(', ') || '',
+      tags: Array.isArray(initialSnippet.tags) ? initialSnippet.tags.join(', ') : '', 
     } : {
       title: '',
       code: '',
@@ -32,30 +33,12 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
     }
   });
 
+  const { mutate: insertSnippet, isPending: isInserting, error: insertError } = useInsertSnippet();
+  const { mutate: updateSnippet, isPending: isUpdating, error: updateError } = useUpdateSnippet();
 
-  const { mutate: insertSnippetMutation, isPending: isInserting, isError: isInsertError, error: insertError } = useInsertSnippet();
-  const { mutate: updateSnippetMutation, isPending: isUpdating, isError: isUpdateError, error: updateError } = useUpdateSnippet();
-
-  const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getUserId = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setUserId(session.user.id);
-      }
-    };
-    getUserId();
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event:unknown, session:Session|null ) => {
-      setUserId(session?.user?.id || null);
-    });
-    return () => { authListener?.subscription?.unsubscribe(); };
-  }, []);
-
-
-  const onSubmit: SubmitHandler<CreateSnippetFormData> = async (data) => {
-    if (!userId) {
-      alert("User not logged in. Cannot create/update snippet.");
+  const onSubmit: SubmitHandler<CreateSnippetFormData> = (data) => {
+    if (!user) {
+      alert("You must be logged in to create or update a snippet.");
       return;
     }
 
@@ -63,27 +46,21 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
       title: data.title,
       code: data.code,
       language: data.language,
-      description: data.description === '' ? undefined : data.description,
+      description: data.description || undefined, 
       tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
+      user_id: user.id, 
     };
 
     if (initialSnippet) {
-      const updatePayload: UpdateSnippetPayload = {
+      updateSnippet({
         id: initialSnippet.id,
-        updates: {
-          ...commonSnippetData,
-          is_pinned: initialSnippet.is_pinned, 
-          user_id: userId, 
-        
-        }
-      };
-
-      updateSnippetMutation(updatePayload, {
+        updates: commonSnippetData
+      }, {
         onSuccess: () => {
           alert('Snippet updated successfully!');
-          onClose(); 
+          onClose?.(); 
         },
-        onError: (err) => {
+        onError: (err) =>{
           console.error('Failed to update snippet:', err);
           alert(`Error updating snippet: ${err.message}`);
         }
@@ -93,16 +70,20 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
       
       const insertPayload: InsertSnippetPayload = {
         ...commonSnippetData,
-        user_id: userId,
+        user_id: user.id,
         is_pinned: false, 
         
       };
 
-      insertSnippetMutation(insertPayload, {
+      insertSnippet(insertPayload, {
         onSuccess: () => {
           alert('Snippet created successfully!');
           reset(); 
-          onClose(); 
+          if (onClose) { 
+            onClose();
+          }
+
+        
         },
         onError: (err) => {
           console.error('Failed to create snippet:', err);
@@ -117,10 +98,10 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
     (isSubmitting || isInserting ? 'Creating...' : 'Create Snippet');
 
   const isLoading = isSubmitting || isInserting || isUpdating;
-  const currentError = isInsertError ? insertError : isUpdateError ? updateError : null;
+  const currentError = insertError ? insertError : updateError ? updateError : null;
 
 
-  if (!userId) {
+  if (!user?.id) {
     return <div className="text-center text-gray-400">Fetching user data...</div>;
   }
 

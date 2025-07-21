@@ -5,6 +5,7 @@ import type { CodeSnippet } from '../type/index';
 
 
 
+
   export const getAllSnippets =async(userId?: string):Promise<{data:CodeSnippet[] | null ; error:Error |null}> =>{
 
 
