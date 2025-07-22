@@ -1,13 +1,12 @@
-// src/pages/Login.tsx
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useAuthActions } from '../hooks/useAuthActions'; 
+import { useAuthActions } from '../hooks/useAuthActions'
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, isLoading } = useAuth(); // <-- Get state from context
-  const { signInWithOAuth } = useAuthActions(); // <-- Get actions from our hook
+  const { user, isLoading } = useAuth(); 
+  const { signInWithOAuth } = useAuthActions();
 
   useEffect(() => {
     if (!isLoading && user) {
@@ -15,9 +14,8 @@ const Login = () => {
     }
   }, [user, isLoading, navigate]);
 
-  // Don't render login buttons if we're still checking auth or if user is logged in
   if (isLoading || user) {
-    return <div>Loading...</div>; // Or a spinner
+    return <div>Loading...</div>; 
   }
 
   return (

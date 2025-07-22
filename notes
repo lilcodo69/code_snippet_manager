@@ -1,0 +1,25 @@
+Components:
+App.tsx: The root component that sets up the React Router and provides the main application structure.
+AuthLayout.tsx: A protective wrapper component that ensures a user is logged in before rendering its child routes.
+Layout.tsx: Provides a common structural layout (e.g., NavBar and main content area) for pages.
+NavBar.tsx: Displays global navigation links and user-specific actions like sign-out.
+SnippetForm.tsx: A reusable form for creating new code snippets or editing existing ones.
+SnippetList.tsx: Fetches and displays a collection of code snippets for the logged-in user.
+snippets.tsx (SnippetCard): Renders a single code snippet with options to pin, edit, or delete it.
+Home.tsx: The main dashboard page where the user's code snippets are displayed.
+Login.tsx: The page dedicated to user authentication via OAuth providers.
+
+
+Hooks:
+AuthContext.tsx (useAuth): Provides a global context for managing and accessing the authenticated user's session state throughout the application.
+useCreateSnippet.ts: A React Query custom hook for efficiently handling the mutation (insertion) of new code snippets to Supabase.
+useDeleteSnippet.ts: A React Query custom hook for handling the mutation (deletion) of code snippets from Supabase.
+useUpdateSnippet.ts: A React Query custom hook for handling the mutation (updating) of existing code snippets in Supabase.
+useAuthActions.ts: A custom hook that encapsulates the logic for user sign-in (OAuth) and sign-out actions with Supabase.
+
+
+
+Other Key Files:
+supabase.ts: Contains the direct, low-level functions for interacting with your Supabase database (e.g., getSnippets, insertSnippet).
+supabaseClient.ts: Initializes and exports the Supabase client instance used for all database and authentication operations.
+type/index.ts: Defines all TypeScript interfaces and types (CodeSnippet, User, Session, etc.) used across your project for strong typing.

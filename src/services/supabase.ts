@@ -1,133 +1,65 @@
-  
-import { supabase } from '../supabaseClient'; // Assuming supabase client is exported from './supabase'
-import type { CodeSnippet } from '../type/index'; 
+import { supabase } from "../supabaseClient";
+import type { CodeSnippet } from "../type/index";
 
+export const getAllSnippets = async (
+  userId: string
+): Promise<CodeSnippet[]> => {
+  const { data, error } = await supabase
+    .from("codesnippet")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 
-
-
-
-  export const getAllSnippets =async(userId?: string):Promise<{data:CodeSnippet[] | null ; error:Error |null}> =>{
-
-
-    try{
-
-      let query =  supabase
-      .from('codesnippet')
-      .select('*')
-
-if (userId) {
-        query = query.eq('user_id', userId); 
-    }
-
-      const  { data, error } = await query.order('created_at', { ascending: false });
-
-
-      
-      if (error) {
-        console.error("Supabase fetch error:", error);
-        return { data: null, error };
-      }
-      
-      return { data: data as CodeSnippet[], error: null };
-    }
-    
-    catch(err){
-      console.log(err);
-      return {data:null, error:err as Error}
-    }
-    
-    
+  if (error) {
+    console.error("Error fetching snippets from Supabase:", error);
+    throw new Error(error.message);
   }
 
-  
+  return data || [];
+};
 
+export const insertSnippet = async (
+  snippet: Omit<CodeSnippet, "id" | "created_at" | "embedding_vectors">
+): Promise<CodeSnippet> => {
+  const { data, error } = await supabase
+    .from("codesnippet")
+    .insert([snippet])
+    .select() // Use .select() to return the inserted row
+    .single();
 
-
-export const insertSnippet =async (snippet: Omit<CodeSnippet, 'id' | 'created_at'>):Promise<{data:CodeSnippet | null; error:Error |null }>  =>{
-
-
-  try{
-const { data, error } = await supabase
-  .from('codesnippet')
-  .insert([
-   snippet
-  ])
-  .select().single();
-
-
-  if(error){
-    console.log(error);
-    
-    return  {data:null,error}
-  }
-return { data: data as CodeSnippet, error: null };
-
+  if (error) {
+    console.error("Error inserting snippet into Supabase:", error);
+    throw new Error(error.message);
   }
 
+  return data;
+};
 
-  catch(err){
-       return {data:null, error:err as Error }
+export const updateSnippet = async (
+  id: string,
+  updates: Partial<CodeSnippet>
+): Promise<CodeSnippet> => {
+  const { data, error } = await supabase
+    .from("codesnippet")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating snippet in Supabase:", error);
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+export const deleteSnippet = async (id: string): Promise<void> => {
+  const { error } = await supabase.from("codesnippet").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting snippet from Supabase:", error);
+    throw new Error(error.message); // Throw for React Query
   }
 
-
-
-}
-  
-
-
-
-
-
-export const updateSnippet  = async(id:string,updates: Partial<CodeSnippet>):Promise<{data: CodeSnippet  |null ; error: Error | null}>=>{
-
-  try{
-    const { data, error } = await supabase
-  .from('codesnippet')
-  .update((updates))
-  .eq('id', id)
-  .select()
-  .single();
-
-
-  if(error){
-    console.log("errror while updating");
-    return {data:null,error}
-  }
-  return {data,error}
-  }
-
-  catch (err){
-
-    console.log(err);
-    
-    return{data:null, error:err as Error }
-  }
-}
-  
-
-
-
-export const deleteSnippet =async(id:string):Promise<{error:Error|null}>=>{
-
-  try {
-const { error } = await supabase
-  .from('codesnippet')
-  .delete()
-  .eq('id', id)
-
-  if(error){
-    return {error}
-  }
-return {error: null}  
-
-  }
-
-  catch(err){
-        console.error("Unexpected error in deleteSnippet:", err);
-
-    return {error:err as Error}
- 
-  }
-}
-  
-
+  return;
+};

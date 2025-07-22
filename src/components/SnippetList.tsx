@@ -1,4 +1,3 @@
-// src/components/SnippetList.tsx
 import React, { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { getAllSnippets } from "../services/supabase";
@@ -48,12 +47,10 @@ const SnippetList = () => {
         return <div className="bg-blue-800 p-4 rounded-lg text-white text-center">Please log in to see your snippets.</div>;
     }
     
-    // 3. If we have a user, but snippets are loading, show a loading state
     if (isSnippetsLoading) {
         return <div className="text-center text-white">Loading snippets...</div>;
     }
 
-    // 4. Handle data fetching errors
     if (isError) {
         return <div className="text-red-500 text-center">Error loading snippets: {error.message}</div>;
     }
@@ -61,8 +58,7 @@ const SnippetList = () => {
     return (
         <div>
             {editingSnippet && (
-                 <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-                    {/* ... Your modal JSX ... */}
+                 <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 ">
                      <SnippetForm initialSnippet={editingSnippet} onClose={handleCloseEdit} />
                 </div>
             )}

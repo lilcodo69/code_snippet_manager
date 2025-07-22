@@ -2,13 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteSnippet } from '../services/supabase';
 import { useAuth } from '../context/AuthContext';
 
-type DeleteSnippetVariables = string; // The ID of the snippet to delete
+type DeleteSnippetVariables = string; 
 
 export const useDeleteSnippet = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  return useMutation<any, Error, DeleteSnippetVariables>({
+  return useMutation<unknown, Error, DeleteSnippetVariables>({
     mutationFn: deleteSnippet,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['snippets', user?.id] });

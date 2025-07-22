@@ -4,10 +4,10 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 
 import type { CodeSnippet, CreateSnippetFormData } from "../type";
 
-import { useInsertSnippet } from "../hooks/useInsertSnippet";
 import { useUpdateSnippet } from "../hooks/useUpdateSnippet";
 import { useAuth } from '../context/AuthContext';
-
+import { useInsertSnippet } from '../hooks/useInsertSnippet';
+//  A reusable form for creating new code snippets or editing existing ones.
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet; 
   onClose?: () => void; 
@@ -85,7 +85,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
 
         
         },
-        onError: (err) => {
+        onError: (err:Error) => {
           console.error('Failed to create snippet:', err);
           alert(`Error creating snippet: ${err.message}`);
         }
@@ -184,7 +184,6 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
       <button
         type="button" 
         onClick={onClose}
-        disabled={isLoading}
         className="ml-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Cancel
