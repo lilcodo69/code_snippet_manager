@@ -24,7 +24,7 @@ export const insertSnippet = async (
   const { data, error } = await supabase
     .from("codesnippet")
     .insert([snippet])
-    .select() // Use .select() to return the inserted row
+    .select() 
     .single();
 
   if (error) {
@@ -63,3 +63,7 @@ export const deleteSnippet = async (id: string): Promise<void> => {
 
   return;
 };
+
+
+
+

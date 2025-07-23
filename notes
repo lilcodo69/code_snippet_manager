@@ -23,3 +23,34 @@ Other Key Files:
 supabase.ts: Contains the direct, low-level functions for interacting with your Supabase database (e.g., getSnippets, insertSnippet).
 supabaseClient.ts: Initializes and exports the Supabase client instance used for all database and authentication operations.
 type/index.ts: Defines all TypeScript interfaces and types (CodeSnippet, User, Session, etc.) used across your project for strong typing.
+
+
+
+
+
+
+
+Two Types of "Supabase Functions"
+
+Database Functions (RPC - Remote Procedure Call)
+What it is: A custom function you write in SQL (specifically PL/pgSQL) and save directly inside your PostgreSQL database.
+How you call it: You call it from your frontend code using supabase.rpc('your_function_name', { arg1: value1 }).
+What it's for: Performing complex database operations that are hard or impossible to do with a simple select, insert, or update. This is what we will use for our semantic search.
+Key Analogy: Think of it as creating your own custom API endpoint that lives inside your database.
+
+
+
+Step 2: Performing the Search (The Action)
+When a user types "how to map over an array in react" into our search bar, we need to:
+Turn that search query into a vector embedding.
+Ask the database: "Find all the snippets whose own vectors are most similar to this new search query vector."
+Standard select can't do this similarity search. We need a Database Function (RPC) for this.
+Function Name: Let's call it match_code_snippets.
+What it does (match_code_snippets Database Function):
+It is written in SQL and saved in the Supabase SQL editor.
+It accepts three arguments:
+query_embedding: The vector of the user's search query.
+match_threshold: A number (e.g., 0.7) to filter out irrelevant results. How similar should the snippets be?
+match_count: A number (e.g., 5) to limit how many results we get back.
+It uses a special operator (<=>, the vector distance operator) to compare the query_embedding to the embedding column of every row in our codesnippet table.
+It returns a list of the top matching codesnippet rows
