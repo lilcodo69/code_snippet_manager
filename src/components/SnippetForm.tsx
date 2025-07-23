@@ -6,13 +6,13 @@ import type { CodeSnippet, CreateSnippetFormData } from "../type";
 
 import { useUpdateSnippet } from "../hooks/useUpdateSnippet";
 import { useAuth } from '../context/AuthContext';
+import { invokeEmbedFunction } from '../services/supabase';
+
 import { useInsertSnippet } from '../hooks/useInsertSnippet';
-//  A reusable form for creating new code snippets or editing existing ones.
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet; 
   onClose?: () => void; 
 }
-type InsertSnippetPayload = Omit<CodeSnippet, 'id' | 'created_at' | 'embedding_vectors'>;
 
 export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClose }) => { 
   const { user } = useAuth();
@@ -36,62 +36,62 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
   const { mutate: insertSnippet, isPending: isInserting, error: insertError } = useInsertSnippet();
   const { mutate: updateSnippet, isPending: isUpdating, error: updateError } = useUpdateSnippet();
 
-  const onSubmit: SubmitHandler<CreateSnippetFormData> = (data) => {
+   const onSubmit: SubmitHandler<CreateSnippetFormData> = async (data) => {
     if (!user) {
-      alert("You must be logged in to create or update a snippet.");
+      alert("User not logged in.");
       return;
     }
 
-    const commonSnippetData = {
-      title: data.title,
-      code: data.code,
-      language: data.language,
-      description: data.description || undefined, 
-      tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
-      user_id: user.id, 
-    };
+    try {
+        const contentToEmbed = `Title: ${data.title}\nLanguage: ${data.language}\nCode: ${data.code}`;
+        console.log("Generating embedding for content...");
+        const embedding = await invokeEmbedFunction(contentToEmbed);
+        console.log("Embedding generated successfully.");
 
-    if (initialSnippet) {
-      updateSnippet({
-        id: initialSnippet.id,
-        updates: commonSnippetData
-      }, {
-        onSuccess: () => {
-          alert('Snippet updated successfully!');
-          onClose?.(); 
-        },
-        onError: (err) =>{
-          console.error('Failed to update snippet:', err);
-          alert(`Error updating snippet: ${err.message}`);
+        const snippetPayload = {
+          title: data.title,
+          code: data.code,
+          language: data.language,
+          description: data.description || undefined,
+          tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
+          user_id: user.id,
+          embedding_vectors: embedding, 
+        };
+
+        if (initialSnippet) {
+          updateSnippet({
+            id: initialSnippet.id,
+            updates: snippetPayload
+          }, {
+            onSuccess: () => {
+              alert('Snippet updated successfully!');
+              onClose?.();
+            }
+          });
+        } else {
+          insertSnippet({
+            ...snippetPayload,
+            is_pinned: false,
+          }, {
+            onSuccess: () => {
+              alert('Snippet created successfully!');
+              reset();
+              onClose?.();
+            }
+          });
         }
-      });
 
-    } else {
-      
-      const insertPayload: InsertSnippetPayload = {
-        ...commonSnippetData,
-        user_id: user.id,
-        is_pinned: false, 
-        
-      };
+    } catch (error) {
 
-      insertSnippet(insertPayload, {
-        onSuccess: () => {
-          alert('Snippet created successfully!');
-          reset(); 
-          if (onClose) { 
-            onClose();
-          }
-
-        
-        },
-        onError: (err:Error) => {
-          console.error('Failed to create snippet:', err);
-          alert(`Error creating snippet: ${err.message}`);
-        }
-      });
+        console.error("Failed to generate embedding or save snippet:", error);
+        if (error instanceof Error) {
+        alert(`An error occurred: ${error.message}`);
     }
-  };
+        else {
+        alert('An unexpected error occurred. Please check the console.');
+    }
+    }
+  }
 
   const buttonText = initialSnippet ?
     (isSubmitting || isUpdating ? 'Updating...' : 'Save Changes') :
