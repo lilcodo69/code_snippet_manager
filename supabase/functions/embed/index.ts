@@ -9,7 +9,7 @@ const corsHeaders = {
 
 console.log("Edge Function 'embed' (using Google AI) is ready to run.");
 
-const API_KEY = Deno.env.get("AIzaSyAAC-bprGhGSx-oD6OQU978yb8v-PxjcAA");
+const API_KEY = Deno.env.get("GOOGLE_API_KEY");
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -36,11 +36,20 @@ serve(async (req) => {
       JSON.stringify({ embedding }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     )
-  } catch (error) {
+  } 
+ catch (error) {
+    
+    console.error("Error inside Edge Function:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ 
+          error: "An error occurred in the Edge Function.",
+          details: errorMessage,
+          fullError: JSON.stringify(error, Object.getOwnPropertyNames(error)) 
+      }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } } // Use 500 for server errors
     )
-  }
+}
 });
 

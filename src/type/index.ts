@@ -44,3 +44,7 @@ export const getIsPinned=(snippet:CodeSnippet):boolean=>{
 
    return is_pinned;
 }
+
+export type SnippetSearchResult = CodeSnippet & {
+  similarity: number;
+};

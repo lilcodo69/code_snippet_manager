@@ -1,5 +1,5 @@
 import { supabase } from "../supabaseClient";
-import type { CodeSnippet } from "../type/index";
+import type { CodeSnippet, SnippetSearchResult } from "../type/index";
 
 export const getAllSnippets = async (
   userId: string
@@ -58,12 +58,27 @@ export const deleteSnippet = async (id: string): Promise<void> => {
 
   if (error) {
     console.error("Error deleting snippet from Supabase:", error);
-    throw new Error(error.message); // Throw for React Query
+    throw new Error(error.message); 
   }
 
   return;
 };
 
 
+export const invokeEmbedFunction = async (inputText: string): Promise<number[]> => {
+  const { data, error } = await supabase.functions.invoke('embed', {
+    body: { inputText },
+  });
+  if (error) throw error;
+  return data.embedding;
+}
 
-
+export const matchCodeSnippets = async (embedding: number[]): Promise<SnippetSearchResult[]> => {
+  const { data, error } = await supabase.rpc('match_code_snippets', {
+    query_embedding: embedding,
+    match_threshold: 0.7,
+    match_count: 5,
+  });
+  if (error) throw error;
+  return data || [];
+}
