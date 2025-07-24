@@ -2,10 +2,10 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { insertSnippet } from '../services/supabase'; 
-import type { CodeSnippet } from '../type';            
+import type { CodeSnippet, CodeSnippetPayload } from '../type';            
 import { useAuth } from '../context/AuthContext';     
 
-type InsertSnippetVariables = Omit<CodeSnippet, 'id' | 'created_at' >;
+type InsertSnippetVariables = Omit<CodeSnippetPayload, 'id' | 'created_at' >;
 
 export const useInsertSnippet = () => {
   const queryClient = useQueryClient();

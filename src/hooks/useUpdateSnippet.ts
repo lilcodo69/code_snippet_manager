@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateSnippet } from '../services/supabase';
-import type { CodeSnippet } from '../type';
+import type { CodeSnippet, CodeSnippetPayload } from '../type';
 import { useAuth } from '../context/AuthContext';
 
-type UpdateSnippetVariables = { id: string; updates: Partial<CodeSnippet> };
+type UpdateSnippetVariables = { id: string; updates: Partial<CodeSnippetPayload> };
 
 export const useUpdateSnippet = () => {
   const queryClient = useQueryClient();

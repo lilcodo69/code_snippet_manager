@@ -1,5 +1,5 @@
 import { supabase } from "../supabaseClient";
-import type { CodeSnippet, SnippetSearchResult } from "../type/index";
+import type { CodeSnippet, SnippetSearchResult ,CodeSnippetPayload } from "../type/index";
 
 export const getAllSnippets = async (
   userId: string
@@ -19,7 +19,7 @@ export const getAllSnippets = async (
 };
 
 export const insertSnippet = async (
-  snippet: Omit<CodeSnippet, "id" | "created_at" | "embedding_vectors">
+  snippet: Omit<CodeSnippetPayload, "id" | "created_at" >
 ): Promise<CodeSnippet> => {
   const { data, error } = await supabase
     .from("codesnippet")
@@ -37,7 +37,7 @@ export const insertSnippet = async (
 
 export const updateSnippet = async (
   id: string,
-  updates: Partial<CodeSnippet>
+  updates: Partial<CodeSnippetPayload>
 ): Promise<CodeSnippet> => {
   const { data, error } = await supabase
     .from("codesnippet")
@@ -81,4 +81,14 @@ export const matchCodeSnippets = async (embedding: number[]): Promise<SnippetSea
   });
   if (error) throw error;
   return data || [];
+}
+
+
+export const reviewSnippet = async({ codeToReview }: { codeToReview: string }):Promise<string>=>{
+  const {data,error} = await supabase.functions.invoke('reviewSnippetCode',{
+    body:{codeToReview},
+  })
+  if(error) throw error;
+  return data.review;
+
 }

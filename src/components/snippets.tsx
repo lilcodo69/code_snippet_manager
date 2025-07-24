@@ -1,4 +1,6 @@
+import { useState } from "react";
 import type{ CodeSnippet } from "../type/index";
+import useReview from "../hooks/useReview";
 
 interface SnippetCardProps {
   snippet: CodeSnippet;
@@ -9,8 +11,12 @@ interface SnippetCardProps {
 
 export const SnippetCard = ({ snippet,onDelete,onPin,onEdit  }: SnippetCardProps) => {
 
+const {mutate: getAiReview, isPending:isReviewing, error:reviewError, data:reviewData,reset} = useReview();
 
-  
+
+   const handleReview = () => {
+        getAiReview({ codeToReview: snippet.code });
+    };
   return (
     <div className="border rounded-lg p-4">
       <h3 className="font-bold">
@@ -48,8 +54,36 @@ Edit
   >
     Delete
   </button>
-</div>
+      <button
+                    onClick={handleReview}
+                    disabled={isReviewing} 
+                    className="px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:opacity-50"
+                 >
+                    {isReviewing ? 'Analyzing...' : 'AI Review'}
+                 </button>
 
-    </div>
-  );
-};
+                 {(reviewData || reviewError) && (
+                    <button onClick={() => reset()} className="text-xs text-gray-400 hover:text-white">Clear</button>
+                 )}
+            </div>
+
+            {isReviewing && <p className="mt-4 text-sm text-gray-400">AI is thinking...</p>}
+            
+            {reviewError && (
+                 <div className="mt-4 p-3 bg-red-900 bg-opacity-30 rounded border border-red-700">
+                    <h5 className="font-bold text-red-400 mb-2">Error:</h5>
+                    <p className="text-sm text-red-300">{reviewError.message}</p>
+                </div>
+            )}
+
+            {reviewData && (
+                <div className="mt-4 p-3 bg-gray-800 rounded border border-gray-700">
+                    <h5 className="font-bold text-white mb-2">AI Review:</h5>
+                    <pre className="text-sm text-gray-300 whitespace-pre-wrap font-sans">
+                        {reviewData.review}
+                    </pre>
+                </div>
+            )}
+        </div>
+    );
+}
