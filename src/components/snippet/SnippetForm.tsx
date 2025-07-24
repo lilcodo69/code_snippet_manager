@@ -2,13 +2,13 @@
 import React from 'react';
 import { useForm, type SubmitHandler } from "react-hook-form";
 
-import type { CodeSnippet, CreateSnippetFormData } from "../type";
+import type { CodeSnippet, CreateSnippetFormData } from "../../type";
 
-import { useUpdateSnippet } from "../hooks/useUpdateSnippet";
-import { useAuth } from '../context/AuthContext';
-import { invokeEmbedFunction } from '../services/supabase';
+import { useUpdateSnippet } from "../../hooks/useUpdateSnippet";
+import { useAuth } from '../../context/AuthContext';
+import { invokeEmbedFunction } from '../../services/supabase';
 
-import { useInsertSnippet } from '../hooks/useInsertSnippet';
+import { useInsertSnippet } from '../../hooks/useInsertSnippet';
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet; 
   onClose?: () => void; 
@@ -45,8 +45,10 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
     try {
         const contentToEmbed = `Title: ${data.title}\nLanguage: ${data.language}\nCode: ${data.code}`;
         console.log("Generating embedding for content...");
-        const embedding = await invokeEmbedFunction(contentToEmbed);
+        const embeddingArray  = await invokeEmbedFunction(contentToEmbed);
         console.log("Embedding generated successfully.");
+
+  // const embeddingString = `[${embeddingArray.join(',')}]`;
 
         const snippetPayload = {
           title: data.title,
@@ -55,13 +57,13 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
           description: data.description || undefined,
           tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
           user_id: user.id,
-          embedding_vectors: embedding, 
+          embedding_vectors: embeddingArray, 
         };
 
         if (initialSnippet) {
           updateSnippet({
             id: initialSnippet.id,
-            updates: snippetPayload
+            updates: snippetPayload 
           }, {
             onSuccess: () => {
               alert('Snippet updated successfully!');

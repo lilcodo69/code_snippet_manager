@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../supabaseClient";
 
-// A protective wrapper component that ensures a user is logged in before rendering its child routes.
 
 const AuthLayout = () => {
   const [session, setSession] = useState<Session | null>(null); 
@@ -19,7 +18,6 @@ const AuthLayout = () => {
       setLoading(false);
 
       if (!session) {
-        // No session, redirect to login
         navigate("/login");
       }
     };
@@ -40,7 +38,7 @@ const AuthLayout = () => {
     );
 
     return () => {
-      authListener.subscription.unsubscribe(); //what is the unsubscribe used for
+      authListener.subscription.unsubscribe(); 
     };
   }, [navigate]);
 
@@ -52,7 +50,7 @@ const AuthLayout = () => {
     );
   }
 
-  return <Outlet context={{ session }} />; //i do not have to listen for auth in every page , like can just render a conditionlaly that if not logged in this will render a login page and if so then it renders outlet (childrens)
+  return <Outlet context={{ session }} />; 
 };
 
 export default AuthLayout;

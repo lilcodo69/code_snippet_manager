@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
-import { getAllSnippets } from "../services/supabase";
-import { useAuth } from '../context/AuthContext'; 
-import { useDeleteSnippet } from '../hooks/useDeleteSnippet'; 
-import { useUpdateSnippet } from '../hooks/useUpdateSnippet';
-import type { CodeSnippet } from "../type";
+import { getAllSnippets } from "../../services/supabase";
+import { useAuth } from '../../context/AuthContext'; 
+import { useDeleteSnippet } from '../../hooks/useDeleteSnippet'; 
+import { useUpdateSnippet } from '../../hooks/useUpdateSnippet';
+import type { CodeSnippet } from "../../type";
 import { SnippetCard } from "./snippets";
 import { SnippetForm } from "./SnippetForm";
 

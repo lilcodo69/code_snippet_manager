@@ -1,25 +1,25 @@
 import { supabase } from "../supabaseClient";
-import type { CodeSnippet, SnippetSearchResult } from "../type/index";
+import type { CodeSnippet, SnippetSearchResult ,CodeSnippetPayload } from "../type/index";
 
-export const getAllSnippets = async (
-  userId: string
-): Promise<CodeSnippet[]> => {
-  const { data, error } = await supabase
-    .from("codesnippet")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching snippets from Supabase:", error);
-    throw new Error(error.message);
+export const getAllSnippets = async (userId: string, limit?: number): Promise<CodeSnippet[]> => {
+  let query = supabase
+    .from('codesnippet')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false }); 
+  
+  if (limit) {
+    query = query.limit(limit);
   }
-
+  
+  const { data, error } = await query;
+  
+  if (error) throw error;
   return data || [];
 };
 
 export const insertSnippet = async (
-  snippet: Omit<CodeSnippet, "id" | "created_at" | "embedding_vectors">
+  snippet: Omit<CodeSnippetPayload, "id" | "created_at" >
 ): Promise<CodeSnippet> => {
   const { data, error } = await supabase
     .from("codesnippet")
@@ -35,23 +35,18 @@ export const insertSnippet = async (
   return data;
 };
 
-export const updateSnippet = async (
-  id: string,
-  updates: Partial<CodeSnippet>
-): Promise<CodeSnippet> => {
+export const updateSnippet = async (id: string, updates: Partial<CodeSnippetPayload>): Promise<CodeSnippet> => {
   const { data, error } = await supabase
-    .from("codesnippet")
+    .from('codesnippet')
     .update(updates)
-    .eq("id", id)
+    .eq('id', id)
     .select()
     .single();
-
-  if (error) {
-    console.error("Error updating snippet in Supabase:", error);
-    throw new Error(error.message);
-  }
+  
+  if (error) throw error;
   return data;
 };
+
 
 export const deleteSnippet = async (id: string): Promise<void> => {
   const { error } = await supabase.from("codesnippet").delete().eq("id", id);
@@ -81,4 +76,14 @@ export const matchCodeSnippets = async (embedding: number[]): Promise<SnippetSea
   });
   if (error) throw error;
   return data || [];
+}
+
+
+export const reviewSnippet = async(codeToReview: string):Promise<{review:string}>=>{
+  const {data,error} = await supabase.functions.invoke('reviewSnippetCode',{
+    body:{codeToReview},
+  })
+  if(error) throw error;
+  return data.review;
+
 }
