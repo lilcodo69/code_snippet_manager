@@ -12,14 +12,12 @@ const Home = () => {
   
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Recent snippets - always fetch
   const { 
     data: recentSnippets, 
     isLoading: isRecentLoading, 
     error: recentError 
   } = useRecentSnippets(7);
 
-  // Search results - only when searching
   const { 
     data: searchResults, 
     isLoading: isSearching, 
@@ -27,7 +25,6 @@ const Home = () => {
     error: searchError 
   } = useSearch(searchQuery);
 
-  // Fixed useEffect syntax
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
@@ -71,7 +68,6 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-6xl">
-      {/* Header with Create Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Your Code Snippets</h2>
         <button
@@ -82,7 +78,7 @@ const Home = () => {
         </button>
       </div>
 
-      {/* Search Bar */}
+   
       <div className="mb-8">
         <div className="flex gap-3">
           <div className="flex-1 relative">
@@ -119,9 +115,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Content Area - Better UX: Show both search results and recent snippets */}
       <div className="space-y-8">
-        {/* Search Results Section - Only show when searching */}
         {isSearchMode && (
           <div>
             {isSearching && (
@@ -176,16 +170,13 @@ const Home = () => {
           </div>
         )}
 
-        {/* Recent Snippets Section - Use your existing component */}
         {!isSearchMode ? (
-          // Show normal recent snippets when not searching
           <RecentSnippets 
             snippets={recentSnippets}
             isLoading={isRecentLoading}
             error={recentError}
           />
         ) : hasRecentSnippets ? (
-          // Show recent snippets below search results when searching
           <div>
             <h3 className="text-2xl font-bold text-white mb-6">📌 Your Recent Snippets</h3>
             <RecentSnippets 
@@ -196,7 +187,6 @@ const Home = () => {
           </div>
         ) : null}
 
-        {/* Empty State - Only when no recent snippets and not searching */}
         {!hasRecentSnippets && !isRecentLoading && !recentError && !isSearchMode && (
           <div className="text-center py-16">
             <div className="text-8xl mb-6">📝</div>
@@ -214,7 +204,6 @@ const Home = () => {
         )}
       </div>
 
-      {/* Create Form Modal */}
       {showCreateForm && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
           <SnippetForm onClose={() => setShowCreateForm(false)} />

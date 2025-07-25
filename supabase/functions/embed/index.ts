@@ -16,6 +16,8 @@ serve(async (req) => {
     return new Response('ok', { headers: corsHeaders })
   }
 
+  console.log(req);
+  
   try {
     const { inputText } = await req.json();
     if (!inputText) {

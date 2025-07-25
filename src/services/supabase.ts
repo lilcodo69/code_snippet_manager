@@ -62,16 +62,16 @@ export const deleteSnippet = async (id: string): Promise<void> => {
 
 export const invokeEmbedFunction = async (inputText: string): Promise<number[]> => {
   const { data, error } = await supabase.functions.invoke('embed', {
-    body: { inputText },
+    body: JSON.stringify({inputText}),
   });
   if (error) throw error;
   return data.embedding;
 }
 
-export const matchCodeSnippets = async (embedding: number[]): Promise<SnippetSearchResult[]> => {
+export const matchCodeSnippets = async (embedding_vectors: number[]): Promise<SnippetSearchResult[]> => {
   const { data, error } = await supabase.rpc('match_code_snippets', {
-    query_embedding: embedding,
-    match_threshold: 0.7,
+    query_embedding: embedding_vectors,
+    match_threshold: 0.1,
     match_count: 5,
   });
   if (error) throw error;
