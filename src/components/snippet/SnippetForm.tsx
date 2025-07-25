@@ -48,8 +48,6 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
         const embeddingArray  = await invokeEmbedFunction(contentToEmbed);
         console.log("Embedding generated successfully.");
 
-  // const embeddingString = `[${embeddingArray.join(',')}]`;
-
         const snippetPayload = {
           title: data.title,
           code: data.code,
@@ -57,7 +55,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
           description: data.description || undefined,
           tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
           user_id: user.id,
-          embedding_vectors: embeddingArray, 
+          embedding_vectors: embedding, 
         };
 
         if (initialSnippet) {

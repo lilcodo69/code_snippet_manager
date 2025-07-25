@@ -46,10 +46,10 @@ export const getIsPinned=(snippet:CodeSnippet):boolean=>{
 }
 
 export type SnippetSearchResult = CodeSnippet & {
-  similarity?: number;
+  similarity: number;
 };
 
 
 export type CodeSnippetPayload = Omit<CodeSnippet, 'embedding_vectors'> & {
-  embedding_vectors: number[];
+  embedding_vectors: string;
 };

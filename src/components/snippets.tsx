@@ -1,5 +1,6 @@
-import type{ CodeSnippet } from "../../type/index";
-import useReview from "../../hooks/useReview";
+import { useState } from "react";
+import type{ CodeSnippet } from "../type/index";
+import useReview from "../hooks/useReview";
 
 interface SnippetCardProps {
   snippet: CodeSnippet;
@@ -13,9 +14,9 @@ export const SnippetCard = ({ snippet,onDelete,onPin,onEdit  }: SnippetCardProps
 const {mutate: getAiReview, isPending:isReviewing, error:reviewError, data:reviewData,reset} = useReview();
 
 
- const handleReview = () => {
-    getAiReview(snippet.code);
-};
+   const handleReview = () => {
+        getAiReview({ codeToReview: snippet.code });
+    };
   return (
     <div className="border rounded-lg p-4">
       <h3 className="font-bold">

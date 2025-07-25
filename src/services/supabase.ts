@@ -35,7 +35,9 @@ export const insertSnippet = async (
   return data;
 };
 
-export const updateSnippet = async (id: string, updates: Partial<CodeSnippetPayload>): Promise<CodeSnippet> => {
+
+
+export  const updateSnippet = async (id: string, updates: Partial<CodeSnippetPayload>): Promise<CodeSnippet> => {
   const { data, error } = await supabase
     .from('codesnippet')
     .update(updates)
@@ -45,7 +47,8 @@ export const updateSnippet = async (id: string, updates: Partial<CodeSnippetPayl
   
   if (error) throw error;
   return data;
-};
+}
+
 
 
 export const deleteSnippet = async (id: string): Promise<void> => {
