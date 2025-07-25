@@ -12,6 +12,7 @@ export const SnippetCard = ({ snippet,onDelete,onPin,onEdit  }: SnippetCardProps
 
 const {mutate: getAiReview, isPending:isReviewing, error:reviewError, data:reviewData,reset} = useReview();
 
+console.log('revireData',reviewData);
 
  const handleReview = () => {
     getAiReview(snippet.code);
@@ -79,7 +80,7 @@ Edit
                 <div className="mt-4 p-3 bg-gray-800 rounded border border-gray-700">
                     <h5 className="font-bold text-white mb-2">AI Review:</h5>
                     <pre className="text-sm text-gray-300 whitespace-pre-wrap font-sans">
-                        {reviewData.review}
+                        {reviewData}
                     </pre>
                 </div>
             )}
