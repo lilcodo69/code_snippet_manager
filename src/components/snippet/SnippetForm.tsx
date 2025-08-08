@@ -55,7 +55,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
           description: data.description || undefined,
           tags: data.tags ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean) : [],
           user_id: user.id,
-          embedding_vectors: embedding, 
+          embedding_vectors: JSON.stringify(embeddingArray)
         };
 
         if (initialSnippet) {
@@ -117,7 +117,10 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
         <input
           id="title"
           type="text"
-          {...register("title", { required: "Title is required" })}
+          {...register("title", { required: "Title is required",maxLength: { 
+        value: 50, 
+        message: "Title cannot exceed 50 characters." 
+    } })}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
           placeholder="e.g., React Hooks Best Practices"
           disabled={isLoading}
@@ -152,9 +155,13 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({ initialSnippet, onClos
 
       <div className="mb-4">
         <label htmlFor="description" className="block text-gray-300 text-sm font-bold mb-2">Description (Optional)</label>
-        <textarea
-          id="description"
-          {...register("description")}
+
+<textarea  {...register("description", {
+validate: (value: string | undefined) => {
+  const wordCount = (value ?? '').split(' ').filter(word => word).length;
+  return wordCount <= 60 || "Description must be 60 words or less.";
+}
+})} 
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600 h-24"
           placeholder="A brief explanation of the code"
           disabled={isLoading}

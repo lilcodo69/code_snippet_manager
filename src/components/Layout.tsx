@@ -13,12 +13,15 @@ type LayoutProps = {
 const Layout = ({children}: LayoutProps)=>{
         return(
 
-            <div className=''>
+            <div className='flex flex-col bg-indigo-400 ' >
+    <div className=''>
                 <NavBar/>
 
             <main>
                 {children}
             </main>
+            </div>
+           
 
 
             </div>

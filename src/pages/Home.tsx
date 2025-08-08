@@ -4,6 +4,7 @@ import { useSearch } from '../hooks/useSearch';
 import { useRecentSnippets } from '../hooks/useRecentSnippets';
 import RecentSnippets from '../components/snippet/RecentSnippets';
 import { SnippetForm } from '../components/snippet/SnippetForm';
+import {snippetTemplate} from '../components/snippet/snippetTemplate'
 
 const Home = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -138,7 +139,9 @@ const Home = () => {
                 </h3>
                 {hasSearchResults ? (
                   <div className="space-y-4">
-                    {searchResults.map(result => (
+
+                    
+                    {/* {searchResults.map(result => (
                       <div key={result.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700 border-l-4 border-l-blue-500">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-bold text-white text-lg">{result.title}</h4>
@@ -154,7 +157,9 @@ const Home = () => {
                           <p className="text-gray-300 mt-2">{result.description}</p>
                         )}
                       </div>
-                    ))}
+                    ))} */}
+
+                    <snippetTemplate/>
                   </div>
                 ) : (
                   <div className="text-center py-8 bg-gray-800 rounded-lg">

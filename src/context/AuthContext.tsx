@@ -9,17 +9,18 @@ interface AuthContextType {
   isLoading: boolean; 
   signOut: () => Promise<void>; 
 }
-
-const AuthContext = createContext<AuthContextType>(null!);
-
 interface AuthProviderProps {
   children: ReactNode;
 }
 
+const AuthContext = createContext<AuthContextType>(null!);
+
+
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Start as true
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const getInitialSession = async () => {
