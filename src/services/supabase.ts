@@ -82,11 +82,14 @@ export const matchCodeSnippets = async (embedding_vectors: number[]): Promise<Sn
 }
 
 
-export const reviewSnippet = async(codeToReview: string):Promise<{review:string}>=>{
+export const reviewSnippet = async(code: string):Promise<{review:string}>=>{
+  console.log("review api called",code);
+  
+  
   const {data,error} = await supabase.functions.invoke('reviewSnippetCode',{
-    body:{codeToReview},
+    body:{code},
   })
   if(error) throw error;
-  return data.review;
+  return  { review: data.review };
 
 }

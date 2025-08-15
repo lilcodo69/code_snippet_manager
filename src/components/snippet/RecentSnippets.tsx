@@ -1,10 +1,10 @@
-// components/snippet/RecentSnippets.tsx
-import React, { useState } from 'react';
+
 import { useAuth } from '../../context/AuthContext';
-import { useDeleteSnippet } from '../../hooks/useDeleteSnippet';
-import { useUpdateSnippet } from '../../hooks/useUpdateSnippet';
 import type { CodeSnippet } from '../../type';
 import { SnippetCard } from './snippets';
+
+import Modal from '../../ui/Modal';
+import {Button} from '../Button';
 import { SnippetForm } from './SnippetForm';
 
 interface RecentSnippetsProps {
@@ -15,26 +15,7 @@ interface RecentSnippetsProps {
 
 const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => {
   const { user } = useAuth();
-  const { mutate: updatePinStatus } = useUpdateSnippet();
-  const { mutate: deleteSnippet } = useDeleteSnippet();
-  
-  const [editingSnippet, setEditingSnippet] = useState<CodeSnippet | null>(null);
 
-  const handlePin = (id: string) => {
-    const snippet = snippets?.find(s => s.id === id);
-    if (snippet) {
-      updatePinStatus({ id, updates: { is_pinned: !snippet.is_pinned } });
-    }
-  };
-
-  const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this snippet?")) {
-      deleteSnippet(id);
-    }
-  };
-
-  const handleEdit = (snippet: CodeSnippet) => setEditingSnippet(snippet);
-  const handleCloseEdit = () => setEditingSnippet(null);
 
   if (!user) {
     return (
@@ -58,45 +39,42 @@ const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => 
 
   return (
     <div>
-      {editingSnippet && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <SnippetForm initialSnippet={editingSnippet} onClose={handleCloseEdit} />
+      <h3 className="text-2xl font-bold text-white mb-4">Recent Snippets</h3>
+      
+      {snippets && snippets.length > 0 ? (
+        <div className="w-full 
+                      grid 
+                      grid-cols-[repeat(1,_27rem)]
+                      lg:grid-cols-[repeat(3,_27rem)]
+                      gap-x-[1.3rem]
+                      gap-y-[1.4rem]
+                      sm:grid-cols-[repeat(2,_27rem)]
+                      justify-center 
+                      px-4">
+          {snippets.map(snippet => (
+            
+            <SnippetCard
+              key={snippet.id}
+              snippet={snippet}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8 bg-gray-800 rounded-lg">
+          <p className="text-gray-400 text-lg mb-4">You haven't created any snippets yet.</p>
+          <p className="text-gray-500 mb-6">Click the button below to create your first one!</p>
+          
+          <Modal>
+            <Modal.Open opens="create-snippet">
+              <Button>+ Create New Snippet</Button>
+            </Modal.Open>
+
+            <Modal.Window name="create-snippet">
+              <SnippetForm />
+            </Modal.Window>
+          </Modal>
         </div>
       )}
-
-      <div className="" >
-        <h3 className="text-2xl font-bold text-white mb-4">Recent Snippets</h3>
-        
-        {snippets && snippets.length > 0 ? (
-          <div className="w-full 
-                grid 
-                grid-cols-[repeat(1,_27rem)]
-                lg:grid-cols-[repeat(3,_27rem)]
-                gap-x-[1.3rem]
-                gap-y-[1.4rem]
-                sm:grid-cols-[repeat(2,_27rem)]
-              
-
-                mx-auto                        
-                px-4                           
-                ">
-            {snippets.map(snippet => (
-              <SnippetCard
-                key={snippet.id}
-                snippet={snippet}
-                onPin={handlePin}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-gray-400 text-lg mb-4">No snippets yet.</p>
-            <p className="text-gray-500">Create your first code snippet to get started!</p>
-          </div>
-        )}
-      </div>
     </div>
   );
 };

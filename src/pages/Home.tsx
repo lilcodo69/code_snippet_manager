@@ -4,7 +4,6 @@ import { useSearch } from '../hooks/useSearch';
 import { useRecentSnippets } from '../hooks/useRecentSnippets';
 import RecentSnippets from '../components/snippet/RecentSnippets';
 import { SnippetForm } from '../components/snippet/SnippetForm';
-import {snippetTemplate} from '../components/snippet/snippetTemplate'
 
 const Home = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -68,16 +67,18 @@ const Home = () => {
   const hasSearchResults = searchResults && searchResults.length > 0;
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-white">Your Code Snippets</h2>
-        <button
+    <div className="container mx-auto p-4 max-w-6xl h-lvh">
+            <button
           onClick={() => setShowCreateForm(true)}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors
+          absolute top-[7rem] right-[1rem] z-10 "
         >
           + Create Snippet
         </button>
-      </div>
+      {/* <div className="flex justify-between items-center mb-6 relative">
+
+  
+      </div> */}
 
    
       <div className="mb-8">
@@ -140,26 +141,6 @@ const Home = () => {
                 {hasSearchResults ? (
                   <div className="space-y-4">
 
-                    
-                    {/* {searchResults.map(result => (
-                      <div key={result.id} className="bg-gray-800 p-4 rounded-lg border border-gray-700 border-l-4 border-l-blue-500">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-bold text-white text-lg">{result.title}</h4>
-                          <span className="text-sm text-green-400 font-semibold">
-                            {result.similarity ? `${(result.similarity * 100).toFixed(1)}% match` : ''}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-400 mb-2">Language: {result.language}</p>
-                        <pre className="bg-gray-900 p-3 rounded text-sm text-gray-300 overflow-x-auto whitespace-pre-wrap">
-                          {result.code}
-                        </pre>
-                        {result.description && (
-                          <p className="text-gray-300 mt-2">{result.description}</p>
-                        )}
-                      </div>
-                    ))} */}
-
-                    <snippetTemplate/>
                   </div>
                 ) : (
                   <div className="text-center py-8 bg-gray-800 rounded-lg">

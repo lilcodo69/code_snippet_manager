@@ -16,7 +16,7 @@ interface ModalProp {
   children: React.ReactNode;
 }
 
-const Modal = ({ children }: ModalProp) => {
+export const Modal = ({ children }: ModalProp) => {
   const [openName, setOpenName] = useState(''); 
   const open = setOpenName;
   const close = () => setOpenName('');
@@ -47,7 +47,7 @@ interface ModalChildProps {
 interface WindowProps {
   children: React.ReactElement<ModalChildProps>;
   name: string; 
-  onCloseModal: () => void;
+  onCloseModal?: () => void;
 }
 
 function Window({ children, name }: WindowProps) {
@@ -58,7 +58,7 @@ function Window({ children, name }: WindowProps) {
   if (name !== openName) return null;
 
   return createPortal(
-      <div>
+      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center transition-all duration-300">
   <div ref = {ref}>
    <button onClick={close}>
           <HiXMark />
@@ -83,7 +83,7 @@ export const useModalContext = () => {
 };
 
 // This part is perfect! It's how you create the compound component.
-Modal.Open = Open;
+ Modal.Open = Open;
 Modal.Window = Window;
 
 export default Modal;
