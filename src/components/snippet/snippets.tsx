@@ -48,7 +48,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
             <img src={`${getLanguageIcon(snippet.language)}`} className="h-full w-full object-fit bg-white hover:opacity-75" />
           </div>
 
-          <div className="flex flex-col justify-between bg-slate-400 h-[6.9rem] pt-2 pl-3 pb-2 pr-3 relative">
+          <div className="flex flex-col justify-between bg-slate-700 h-[6.9rem] pt-2 pl-3 pb-2 pr-3 relative">
             <h1 className="font-mono font-semibold">{snippet.title}</h1>
             <div className=" flex-grow overflow-hidden">
               <p className=" line-clamp-2" title={snippet.description}>
@@ -60,7 +60,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
               <Modal.Open opens="view-snippet">
                 <button
                   onClick={(e) => e.stopPropagation()} 
-                  className="transition-colors duration-350 ease-in-out hover:text-white hover:bg-blue-500 hover:font-semibold bg-slate-100 px-[0.8rem] py-[0.3rem] rounded-lg"
+                  className="transition-colors duration-350 ease-in-out hover:text-white hover:bg-blue-500 hover:font-semibold bg-white px-[0.8rem] py-[0.3rem] rounded-lg text-blue-500 font-medium"
                 >
                   Open
                 </button>

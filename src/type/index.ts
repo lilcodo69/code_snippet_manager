@@ -1,24 +1,21 @@
+export interface CodeSnippet {
+  id: string;
 
+  created_at: string;
 
- export interface CodeSnippet{
-id:string,
+  title: string;
 
-created_at: string,
+  code: string;
 
-title: string,
+  language: string;
+  user_id: string | undefined;
 
-code: string,
+  description?: string;
+  tags?: string[];
 
-language:string,
-user_id: string |undefined,
+  is_pinned: boolean;
 
-description? :string,
-tags?:string[],
-
-is_pinned :boolean, 
-
-embedding_vectors?: number[];
-
+  embedding_vectors?: number[];
 }
 
 export interface CreateSnippetFormData {
@@ -26,30 +23,25 @@ export interface CreateSnippetFormData {
   code: string;
   language: string;
   description?: string;
-  tags?: string; 
+  tags?: string;
 }
 
-export const getTitle=(snippet:CodeSnippet):string=>{
+export const getTitle = (snippet: CodeSnippet): string => {
+  const { title } = snippet;
 
-   const {title}  = snippet;
+  return title;
+};
 
-   return title;
-}
+export const getIsPinned = (snippet: CodeSnippet): boolean => {
+  const { is_pinned } = snippet;
 
-
-
-export const getIsPinned=(snippet:CodeSnippet):boolean=>{
-
-   const {is_pinned} = snippet;
-
-   return is_pinned;
-}
+  return is_pinned;
+};
 
 export type SnippetSearchResult = CodeSnippet & {
   similarity: number;
 };
 
-
-export type CodeSnippetPayload = Omit<CodeSnippet, 'embedding_vectors'> & {
+export type CodeSnippetPayload = Omit<CodeSnippet, "embedding_vectors"> & {
   embedding_vectors: string;
 };

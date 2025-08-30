@@ -11,12 +11,13 @@ import { useInsertSnippet } from "../../hooks/useInsertSnippet";
 
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet;
-  onClose?: () => void;
+  // onClose?: () => void;
+  onCloseModal?: () => void;
 }
 
 export const SnippetForm: React.FC<SnippetFormProps> = ({
   initialSnippet,
-  onClose,
+  onCloseModal
 }) => {
   const { user } = useAuth();
 
@@ -92,7 +93,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           {
             onSuccess: () => {
               alert("Snippet updated successfully!");
-              onClose?.();
+              onCloseModal?.();
             },
           }
         );
@@ -106,7 +107,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
             onSuccess: () => {
               alert("Snippet created successfully!");
               reset();
-              onClose?.();
+              onCloseModal?.();
             },
           }
         );
@@ -145,7 +146,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8"
+      className="bg-gray-900 p-6 rounded-lg shadow-lg mb-8 min-w-[30rem]"
     >
       <h2 className="text-2xl font-bold text-white mb-6">
         {initialSnippet ? "Edit Snippet" : "Create New Snippet"}
@@ -168,7 +169,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               message: "Title cannot exceed 50 characters.",
             },
           })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
           placeholder="e.g., React Hooks Best Practices"
           disabled={isLoading}
         />
@@ -211,7 +212,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           id="language"
           type="text"
           {...register("language", { required: "Language is required" })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
+          className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
           placeholder="e.g., javascript, typescript, python"
           disabled={isLoading}
         />
@@ -239,7 +240,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               return wordCount <= 60 || "Description must be 60 words or less.";
             },
           })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600 h-24"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600 h-24"
           placeholder="A brief explanation of the code"
           disabled={isLoading}
         ></textarea>
@@ -256,7 +257,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           id="tags"
           type="text"
           {...register("tags")}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
           placeholder="e.g., react, hooks, state, frontend"
           disabled={isLoading}
         />
@@ -272,7 +273,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
 
       <button
         type="button"
-        onClick={onClose}
+        onClick={onCloseModal}
         className="ml-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Cancel

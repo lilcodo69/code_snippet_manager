@@ -8,6 +8,7 @@ import { Button } from "../Button";
 import useReview from "../../hooks/useReview";
 import { useState } from "react";
 import SnippetForm from "./SnippetForm";
+import Modal from "../../ui/Modal";
 // import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 // import {  CodeProps } from 'react-markdown/lib/ast-to-react';
 
@@ -65,9 +66,15 @@ const [isEditing, setIsEditing] = useState(false);
           <Button onClick={onCloseModal} className="bg-gray-700 hover:bg-gray-600">
             Close
           </Button>
-          <Button onClick={() => setIsEditing(true)} className="bg-gray-700 hover:bg-gray-600">
-            Edit
-          </Button>
+         <Modal>
+                     <Modal.Open opens="create-snippet">
+                       <Button className='rounded-md text-semibold bg-gray-500'>✏️ Edit</Button>
+                     </Modal.Open>
+         
+                     <Modal.Window name="create-snippet">
+                       <SnippetForm initialSnippet={snippet}/>
+                     </Modal.Window>
+                   </Modal>
         </div>
       </div>
 
@@ -138,29 +145,8 @@ const [isEditing, setIsEditing] = useState(false);
         </SlideOverPanel>   
            </div>
 
-      {/* 
-        2. THE EDIT FORM OVERLAY:
-        This is now correctly placed inside the relative parent.
-      */}
-      {isEditing && (
-        <div className="absolute inset-0 z-40 ">
-          {/* Gray background that stops clicks and closes the form */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEditing(false);
-            }}
-          ></div>
-          {/* Form container that also stops clicks */}
-          <div className="relative z-50" onClick={(e) => e.stopPropagation()}>
-            <SnippetForm 
-              initialSnippet={snippet}
-              onClose={() => setIsEditing(false)}
-            />
-          </div>
-        </div>
-      )}
+      
+    
     </div>
   );
 };

@@ -1,21 +1,25 @@
 
 import { useAuth } from '../../context/AuthContext';
-import type { CodeSnippet } from '../../type';
+import type { CodeSnippet, SnippetSearchResult } from '../../type';
 import { SnippetCard } from './snippets';
 
 import Modal from '../../ui/Modal';
 import {Button} from '../Button';
 import { SnippetForm } from './SnippetForm';
+import { useSearchContext } from '../../context/searchBarContext';
+
+type SnippetOrSearchResult = CodeSnippet| SnippetSearchResult ;
 
 interface RecentSnippetsProps {
-  snippets?: CodeSnippet[];
+  snippets?: SnippetOrSearchResult[];
   isLoading?: boolean;
   error?: Error | null;
 }
 
 const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => {
   const { user } = useAuth();
-
+  const {isSearchMode} = useSearchContext();
+  
 
   if (!user) {
     return (
@@ -37,12 +41,14 @@ const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => 
     );
   }
 
+
+
   return (
-    <div>
-      <h3 className="text-2xl font-bold text-white mb-4">Recent Snippets</h3>
+    <div className=''>
+    
       
-      {snippets && snippets.length > 0 ? (
-        <div className="w-full 
+      {snippets && snippets.length > 0 ||isSearchMode? (
+        <div className="w-full  
                       grid 
                       grid-cols-[repeat(1,_27rem)]
                       lg:grid-cols-[repeat(3,_27rem)]
@@ -51,7 +57,7 @@ const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => 
                       sm:grid-cols-[repeat(2,_27rem)]
                       justify-center 
                       px-4">
-          {snippets.map(snippet => (
+          {snippets?.map(snippet => (
             
             <SnippetCard
               key={snippet.id}
@@ -66,7 +72,7 @@ const RecentSnippets = ({ snippets, isLoading, error }: RecentSnippetsProps) => 
           
           <Modal>
             <Modal.Open opens="create-snippet">
-              <Button>+ Create New Snippet</Button>
+              <Button className='rounded-md text-semibold bg-green-500'>+ Create New Snippet</Button>
             </Modal.Open>
 
             <Modal.Window name="create-snippet">

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext,type ReactNode } from 'react';
+import  { createContext, useState, useContext,type ReactNode } from 'react';
 import { useSearch } from '../hooks/useSearch'; 
 
 interface Snippet {
@@ -6,6 +6,7 @@ interface Snippet {
   title: string;
   code: string;
   language: string;
+
 }
 
 interface SearchContextType {
@@ -16,12 +17,18 @@ interface SearchContextType {
   isSearchError: boolean;
   searchError: Error | null;
   clearSearch: () => void;
+  isSearchMode:boolean;
+  setSearchMode:(isSearchMode:boolean)=>void;
+ 
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
 
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchMode,setSearchMode]= useState(false);
+
+
 
   const {
     data: searchResults,
@@ -30,8 +37,11 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     error: searchError
   } = useSearch(searchQuery);
 
+  
   const clearSearch = () => {
     setSearchQuery('');
+    setSearchMode(false);
+    
   };
 
   const value = {
@@ -41,7 +51,9 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     isSearching,
     isSearchError,
     searchError,
-    clearSearch
+    clearSearch,
+    isSearchMode,
+    setSearchMode
   };
 
 

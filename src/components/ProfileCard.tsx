@@ -29,7 +29,7 @@ const ProfileDropdown = () => {
       >
         <img
           className="w-full h-full object-cover"
-          src={avatarUrl || `https://i.pravatar.cc/40?u=${user.id}`} 
+          src={avatarUrl } 
           alt="User avatar"
         />
       </button>
@@ -42,7 +42,7 @@ const ProfileDropdown = () => {
             <div className="flex items-center gap-4">
               <img
                 className="w-12 h-12 rounded-full object-cover"
-                src={avatarUrl|| `https://i.pravatar.cc/48?u=${user.id}`}
+                src={avatarUrl}
                 alt="User avatar"
               />
               <div>

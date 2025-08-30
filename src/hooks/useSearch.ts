@@ -18,7 +18,7 @@ export function useSearch(searchQuery: string) {
       return results;
     },
 
-      placeholderData: (previousData) => previousData,
+      
 
   });
 }

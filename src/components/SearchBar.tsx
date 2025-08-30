@@ -3,9 +3,9 @@ import { useSearchContext } from '../context/searchBarContext';
 
 export const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
-  const { setSearchQuery, clearSearch, searchQuery } = useSearchContext();
+  const { setSearchQuery, clearSearch, searchQuery,setSearchMode } = useSearchContext();
   const searchInputRef = useRef<HTMLInputElement>(null);
-
+     
   useEffect(() => {
     if (!searchQuery) {
       setInputValue('');
@@ -15,13 +15,18 @@ export const SearchBar = () => {
   const handleSearch = () => {
     if (inputValue.trim()) {
       setSearchQuery(inputValue.trim());
+    setSearchMode(true);
+     
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
+    setSearchMode(true);
+
     }
+   
   };
 
   useEffect(() => {
