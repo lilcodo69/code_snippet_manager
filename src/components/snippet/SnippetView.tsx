@@ -30,7 +30,7 @@ export const SnippetView = ({
     error: reviewError,
   } = useReview();
   const [isReviewPanelOpen, setIsReviewPanelOpen] = useState(false);
-const [isEditing, setIsEditing] = useState(false);
+// const [isEditing, setIsEditing] = useState(false);
   const handleCopy = () => {
     navigator.clipboard.writeText(snippet.code);
 
@@ -48,11 +48,9 @@ const [isEditing, setIsEditing] = useState(false);
   };
 
   return (
-    // THE REFACTORED JSX:
-    // 1. The main container is now the relative anchor
+
     <div className="relative flex flex-col bg-zinc-800 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px]">
       
-      {/* --- HEADER --- */}
       <div className="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0 ">
         <h2 className="text-2xl font-bold truncate pr-4" title={snippet.title}>
           {snippet.title}
@@ -78,7 +76,6 @@ const [isEditing, setIsEditing] = useState(false);
         </div>
       </div>
 
-      {/* --- BODY --- */}
       <div className="flex-grow  overflow-y-auto p-4">
         <div className="rounded-md overflow-hidden  h-[70vh]">
           <SyntaxHighlighter
@@ -110,12 +107,10 @@ const [isEditing, setIsEditing] = useState(false);
             <p className="text-red-400">Error: {reviewError.message}</p>
           )}
 
-          {/* This is the part that does all the work */}
           {reviewData && (
             <ReactMarkdown
-              children={reviewData.review} // 1. Pass the markdown text here
+              children={reviewData.review}
               components={{
-                // 2. This part tells the component how to handle code blocks
                 code({
                   node,
                   inline,
