@@ -10,7 +10,6 @@ import { useState } from "react";
 import SnippetForm from "./SnippetForm";
 import Modal from "../../ui/Modal";
 // import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-// import {  CodeProps } from 'react-markdown/lib/ast-to-react';
 
 interface SnippetViewProps {
   snippet: CodeSnippet;
@@ -30,7 +29,7 @@ export const SnippetView = ({
     error: reviewError,
   } = useReview();
   const [isReviewPanelOpen, setIsReviewPanelOpen] = useState(false);
-// const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   const handleCopy = () => {
     navigator.clipboard.writeText(snippet.code);
 
@@ -48,61 +47,69 @@ export const SnippetView = ({
   };
 
   return (
-
     <div className="relative flex flex-col bg-zinc-800 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px]">
-      
       <div className="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0 ">
         <h2 className="text-2xl font-bold truncate pr-4" title={snippet.title}>
           {snippet.title}
         </h2>
         <div className="flex items-center gap-3">
           {children}
-          <Button onClick={handleCopy}>Copy Code</Button>
-          <Button onClick={handleAiReview} disabled={isPending}>
+          <Button
+            onClick={handleCopy}
+            className="bg-gray-700 hover:bg-gray-600"
+          >
+            Copy Code
+          </Button>
+          <Button
+            onClick={handleAiReview}
+            disabled={isPending}
+            className="bg-gray-700 hover:bg-gray-600"
+          >
             {isPending ? "Reviewing..." : "AI Review"}
           </Button>
-          <Button onClick={onCloseModal} className="bg-gray-700 hover:bg-gray-600">
+          <Button
+            onClick={onCloseModal}
+            className="bg-gray-700 hover:bg-gray-600"
+          >
             Close
           </Button>
-         <Modal>
-                     <Modal.Open opens="create-snippet">
-                       <Button className='rounded-md text-semibold bg-gray-500'>✏️ Edit</Button>
-                     </Modal.Open>
-         
-                     <Modal.Window name="create-snippet">
-                       <SnippetForm initialSnippet={snippet}/>
-                     </Modal.Window>
-                   </Modal>
+          <Modal>
+            <Modal.Open opens="create-snippet">
+              <Button className="rounded-md text-semibold bg-gray-500">
+                ✏️ Edit
+              </Button>
+            </Modal.Open>
+
+            <Modal.Window name="create-snippet">
+              <SnippetForm initialSnippet={snippet} />
+            </Modal.Window>
+          </Modal>
         </div>
       </div>
 
       <div className="flex-grow  overflow-y-auto p-4">
         <div className="rounded-md overflow-hidden  h-[70vh]">
           <SyntaxHighlighter
-            language={snippet.language?.toLowerCase() || 'plaintext'}
+            language={snippet.language?.toLowerCase() || "plaintext"}
             style={tomorrow}
             showLineNumbers
             wrapLines={true}
-            customStyle={{ margin: 0,height: '100%' }}
+            customStyle={{ margin: 0, height: "100%" }}
             codeTagProps={{
-        style: {
-          height: '100%',
-          
-        }
-        
-      }}
+              style: {
+                height: "100%",
+              },
+            }}
           >
             {snippet.code}
           </SyntaxHighlighter>
         </div>
-<SlideOverPanel
+        <SlideOverPanel
           isOpen={isReviewPanelOpen}
           onClose={() => setIsReviewPanelOpen(false)}
           title="AI Code Review"
         >
-          {isPending && (
-            <p className="text-blue-400">Analyzing your code...</p>
-          )}
+          {isPending && <p className="text-blue-400">Analyzing your code...</p>}
           {reviewError && (
             <p className="text-red-400">Error: {reviewError.message}</p>
           )}
@@ -112,16 +119,21 @@ export const SnippetView = ({
               children={reviewData.review}
               components={{
                 code({
-                  node,
+                  node:_node,
                   inline,
                   className,
                   children,
                   ...props
-                }: CodeProps) {
+                }: {
+                  node?: any;
+                  inline?: boolean;
+                  className?: string;
+                  children?: React.ReactNode;
+                }) {
                   const match = /language-(\w+)/.exec(className || "");
                   return !inline && match ? (
                     <SyntaxHighlighter
-                      style={tomorrow}
+                      style={tomorrow as any}
                       language={match[1]}
                       PreTag="div"
                       {...props}
@@ -137,11 +149,8 @@ export const SnippetView = ({
               }}
             />
           )}
-        </SlideOverPanel>   
-           </div>
-
-      
-    
+        </SlideOverPanel>
+      </div>
     </div>
   );
 };

@@ -1,8 +1,23 @@
-# Supabase
-.branches
-.temp
+/node_modules
 
-# dotenvx
-.env.keys
+
+/supabase/.temp
+
+/dist
+/.vite
+
+.env
 .env.local
 .env.*.local
+.env.keys
+
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+notes
+
+/.vscode
+.DS_Store
+Thumbs.db

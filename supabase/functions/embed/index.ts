@@ -50,7 +50,7 @@ serve(async (req) => {
           details: errorMessage,
           fullError: JSON.stringify(error, Object.getOwnPropertyNames(error)) 
       }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } } // Use 500 for server errors
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } } 
     )
 }
 });
