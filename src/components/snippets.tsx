@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type{ CodeSnippet } from "../type/index";
 import useReview from "../hooks/useReview";
 
@@ -15,7 +14,8 @@ const {mutate: getAiReview, isPending:isReviewing, error:reviewError, data:revie
 
 
    const handleReview = () => {
-        getAiReview({ codeToReview: snippet.code });
+    if(!snippet.code) return ;
+        getAiReview( snippet.code as string);
     };
   return (
     <div className="border rounded-lg p-4">
