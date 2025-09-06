@@ -1,4 +1,4 @@
-// components/snippet/snippets.tsx
+
 
 import type { CodeSnippet } from "../../type/index";
 import getLanguageIcon from "../../getLanguageIcon";

@@ -75,20 +75,12 @@ export const getLanguageIcon = (language:string) => {
     'default': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/code/code-original.svg'
   };
   
-  const normalizedLanguage = language?.toLowerCase().trim();
+type IconKeys = keyof typeof icons;
+const normalizedLanguage: IconKeys = language.toLowerCase() as IconKeys;
   
-  return icons[normalizedLanguage] || icons['default'];
+  return icons[normalizedLanguage]  || icons['default'];
 };
 
-// Usage examples:
-// getLanguageIcon('JavaScript') → returns JS icon
-// getLanguageIcon('python') → returns Python icon
-// getLanguageIcon('unknown') → returns default code icon
 
-// For React/JSX usage:
-// <img src={getLanguageIcon(snippet.language)} alt={`${snippet.language} icon`} />
-
-// For CSS background usage:
-// backgroundImage: `url(${getLanguageIcon(snippet.language)})`
 
 export default getLanguageIcon;

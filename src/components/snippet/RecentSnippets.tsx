@@ -7,7 +7,7 @@ import { Button } from "../Button";
 import { SnippetForm } from "./SnippetForm";
 import { useSearchContext } from "../../context/searchBarContext";
 
-type SnippetOrSearchResult = CodeSnippet | SnippetSearchResult;
+type SnippetOrSearchResult = CodeSnippet | SnippetSearchResult ;
 
 interface RecentSnippetsProps {
   snippets?: SnippetOrSearchResult[];

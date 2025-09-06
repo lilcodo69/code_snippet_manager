@@ -1,18 +1,13 @@
 import  { createContext, useState, useContext,type ReactNode } from 'react';
 import { useSearch } from '../hooks/useSearch'; 
+import type { SnippetSearchResult } from '../type';
 
-interface Snippet {
-  id: string;
-  title: string;
-  code: string;
-  language: string;
 
-}
 
 interface SearchContextType {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  searchResults: Snippet[] | undefined;
+  searchResults: SnippetSearchResult[] | undefined;
   isSearching: boolean;
   isSearchError: boolean;
   searchError: Error | null;
