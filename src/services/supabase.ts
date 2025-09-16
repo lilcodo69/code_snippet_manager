@@ -64,14 +64,18 @@ export const deleteSnippet = async (id: string): Promise<void> => {
 
 
 export const invokeEmbedFunction = async (inputText: string): Promise<number[]> => {
+  console.log("inputtext invked fn",inputText);
+  
   const { data, error } = await supabase.functions.invoke('embed', {
     body: JSON.stringify({inputText}),
   });
-  if (error) throw error;
+  if (error) console.error("Error invoking embed function:", error.message);
+  ;
   return data.embedding;
 }
 
 export const matchCodeSnippets = async (embedding_vectors: number[]): Promise<SnippetSearchResult[]> => {
+
   const { data, error } = await supabase.rpc('match_code_snippets', {
     query_embedding: embedding_vectors,
     match_threshold: 0.7,

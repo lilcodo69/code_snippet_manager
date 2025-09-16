@@ -1,12 +1,12 @@
 import { SearchBar } from "./SearchBar";
 import ProfileDropdown from "./ProfileCard";
 
-const Navbar = () => {
+export const Navbar = () => {
   return (
-    <header className=" bg-gray-800 text-white shadow-lg">
-      <div className=" mx-auto flex items-center px-[3rem] py-3 justify-between ">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-800 text-white shadow-lg">
+      <div className="mx-auto flex items-center px-[3rem] py-3 justify-between ">
         <div className="text-[1.6rem] font-bold mr-3">
-          <span>CodeVault</span>
+          <span>CodeStashIn</span>
         </div>
 
         <SearchBar />
@@ -18,5 +18,3 @@ const Navbar = () => {
     </header>
   );
 };
-
-export default Navbar;

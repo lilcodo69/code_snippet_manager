@@ -5,11 +5,14 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import type { CodeSnippet } from "../../type";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Button } from "../Button";
-import useReview from "../../hooks/useReview";
+import {useReview} from "../../hooks/useReview";
 import { useState } from "react";
 import SnippetForm from "./SnippetForm";
 import Modal from "../../ui/Modal";
-// import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { HiOutlineX } from "react-icons/hi";
+import  {reviewSnippet}  from "../../services/supabase";
+import { toast } from "react-toastify";
+import { LoadingSpinner } from "../../ui/LoadingSpinner";
 
 interface SnippetViewProps {
   snippet: CodeSnippet;
@@ -22,28 +25,24 @@ export const SnippetView = ({
   onCloseModal,
   children,
 }: SnippetViewProps) => {
+  const [isReviewPanelOpen, setIsReviewPanelOpen] = useState(false);
+
   const {
-    mutate: performReview,
     isPending,
     data: reviewData,
-    error: reviewError,
-  } = useReview();
-  const [isReviewPanelOpen, setIsReviewPanelOpen] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false);
+  } = useReview(snippet.code,isReviewPanelOpen);
   const handleCopy = () => {
     navigator.clipboard.writeText(snippet.code);
 
-    alert("Code copied to clipboard!");
+    toast.success("Code copied to clipboard!");
   };
 
   const handleAiReview = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsReviewPanelOpen(true);
-    console.log(snippet.code);
     const codeString: string = snippet.code;
-    console.log("typeof snippet.code:", typeof snippet.code);
 
-    performReview(codeString);
+    reviewSnippet(codeString);
   };
 
   return (
@@ -52,37 +51,68 @@ export const SnippetView = ({
         <h2 className="text-2xl font-bold truncate pr-4" title={snippet.title}>
           {snippet.title}
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {children}
+
           <Button
             onClick={handleCopy}
-            className="bg-gray-700 hover:bg-gray-600"
+            isIconOnly={true}
+            className=" hover:bg-gray-600 "
+            aria-label="Copy Code"
+            title="Copy Code"
           >
-            Copy Code
+            <img
+              src="/img/copy.png"
+              alt="Copy Code"
+              className="w-6 h-6 object-contain transition-transform group-hover:scale-110" // Icon size, scale on button hover
+            />
           </Button>
+
           <Button
             onClick={handleAiReview}
-            disabled={isPending}
-            className="bg-gray-700 hover:bg-gray-600"
+           
+            isIconOnly={true}
+            className=" hover:bg-gray-700"
+            aria-label="AI Review Code"
+            title="AI Review Code"
           >
-            {isPending ? "Reviewing..." : "AI Review"}
+           
+              <img
+                src="/img/ai img.png"
+                alt="AI Review"
+                className="w-6 h-6 object-contain transition-transform group-hover:scale-110"
+              />
+          
           </Button>
-          <Button
-            onClick={onCloseModal}
-            className="bg-gray-700 hover:bg-gray-600"
-          >
-            Close
-          </Button>
+
           <Modal>
             <Modal.Open opens="create-snippet">
-              <Button className="rounded-md text-semibold bg-gray-500">
-                ✏️ Edit
+              <Button
+                isIconOnly={true}
+                className="bg-transparent hover:bg-gray-700"
+                aria-label="Edit Snippet"
+                title="Edit Snippet"
+              >
+                <img
+                  src="/img/edit.png"
+                  alt="Edit Snippet"
+                  className="w-6 h-6 object-contain transition-transform group-hover:scale-110"
+                />
               </Button>
             </Modal.Open>
 
             <Modal.Window name="create-snippet">
               <SnippetForm initialSnippet={snippet} />
             </Modal.Window>
+            <Button
+              onClick={onCloseModal}
+              isIconOnly={true}
+              className=" hover:bg-red-900/50 hover:text-red-400"
+              aria-label="Close"
+              title="Close"
+            >
+              <HiOutlineX className="w-6 h-6" />
+            </Button>
           </Modal>
         </div>
       </div>
@@ -94,7 +124,11 @@ export const SnippetView = ({
             style={tomorrow}
             showLineNumbers
             wrapLines={true}
-            customStyle={{ margin: 0, height: "100%" }}
+            customStyle={{
+              margin: 0,
+              height: "100%",
+              whiteSpace: "pre-wrap", 
+            }}
             codeTagProps={{
               style: {
                 height: "100%",
@@ -109,38 +143,74 @@ export const SnippetView = ({
           onClose={() => setIsReviewPanelOpen(false)}
           title="AI Code Review"
         >
-          {isPending && <p className="text-blue-400">Analyzing your code...</p>}
-          {reviewError && (
-            <p className="text-red-400">Error: {reviewError.message}</p>
-          )}
+          {isPending && <LoadingSpinner message="Analyzing your code..." />}
 
           {reviewData && (
             <ReactMarkdown
               children={reviewData.review}
               components={{
-                code({
-                  node:_node,
-                  inline,
-                  className,
-                  children,
-                  ...props
-                }: {
-                  node?: any;
-                  inline?: boolean;
-                  className?: string;
-                  children?: React.ReactNode;
-                }) {
+                h3: ({ node, ...props }) => (
+                  <h3
+                    className="text-lg font-semibold text-blue-400 mt-6 mb-2 border-b border-gray-600 pb-2"
+                    {...props}
+                  />
+                ),
+
+                ul: ({ node, ...props }) => (
+                  <ul className="list-disc pl-5 space-y-2" {...props} />
+                ),
+
+                code({ node: _node, inline, className, children, ...props }) {
+                  const { ref: _ref, ...rest } = props;
                   const match = /language-(\w+)/.exec(className || "");
-                  return !inline && match ? (
-                    <SyntaxHighlighter
-                      style={tomorrow as any}
-                      language={match[1]}
-                      PreTag="div"
-                      {...props}
-                    >
-                      {String(children).replace(/\n$/, "")}
-                    </SyntaxHighlighter>
-                  ) : (
+
+                  if (inline) {
+                    return (
+                      <code
+                        className={`${className} bg-gray-700 rounded-sm px-1 py-0.5 font-mono text-sm`}
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    );
+                  }
+
+                  if (match) {
+                    const handleBlockCopy = () => {
+                      const codeString = String(children).replace(/\n$/, "");
+                      navigator.clipboard.writeText(codeString);
+                      toast.success("AI suggestion copied!");
+                    };
+
+                    return (
+                      <div className="relative group my-4">
+                        <Button
+                          onClick={handleBlockCopy}
+                          isIconOnly={true}
+                          className="absolute top-2 right-2 bg-gray-800 hover:bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                          aria-label="Copy Code"
+                          title="Copy Code"
+                        >
+                          <img
+                            src="/img/copy.png"
+                            alt="Copy Code"
+                            className="w-5 h-5 object-contain"
+                          />
+                        </Button>
+
+                        <SyntaxHighlighter
+                          style={tomorrow as any}
+                          language={match[1]}
+                          PreTag="div"
+                          {...rest}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      </div>
+                    );
+                  }
+
+                  return (
                     <code className={className} {...props}>
                       {children}
                     </code>

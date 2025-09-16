@@ -13,6 +13,8 @@ export const SearchBar = () => {
   }, [searchQuery]);
 
   const handleSearch = () => {
+    console.log("search Input",inputValue);
+    
     if (inputValue.trim()) {
       setSearchQuery(inputValue.trim());
     setSearchMode(true);
@@ -54,9 +56,9 @@ export const SearchBar = () => {
               className="w-full p-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <kbd className="px-2 py-1 text-xs font-semibold text-gray-400 bg-gray-600 rounded border border-gray-500">
+                <div className="px-[0.6rem] py-1 text-xs font-semibold text-gray-400 bg-gray-600 rounded border border-gray-500">
                   /
-                </kbd>
+                </div>
             </div>
         </div>
         <button

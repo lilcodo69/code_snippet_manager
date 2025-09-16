@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import React, { createContext, useState, useEffect, useContext,type ReactNode } from 'react';
 import {supabase} from "../supabaseClient"
 import type{ Session, User ,AuthChangeEvent } from '@supabase/supabase-js';
@@ -14,9 +13,6 @@ interface AuthProviderProps {
 }
 
 const AuthContext = createContext<AuthContextType>(null!);
-
-
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);

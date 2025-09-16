@@ -1,17 +1,16 @@
-import { useMutation } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query";
 import { reviewSnippet } from "../services/supabase";
 
-type ReviewSnippetVariables = string;
-type ReviewSnippetData = { review: string };
-const useReview = () => {
-    console.log("review logged");
-    
-    return useMutation<ReviewSnippetData, Error, ReviewSnippetVariables>({
-        mutationFn: (code) => reviewSnippet(code), // Fixed: destructure the variables
-        onError: (error) => {
-            console.log("error", error);
-        },
-    });
+interface ReviewSnippetData {
+  review: string;
 }
 
-export default useReview;
+export const useReview = (code: string, enabled: boolean) => {
+  return useQuery<ReviewSnippetData, Error>({
+    queryKey: ["codeReview", code],
+    queryFn: () => reviewSnippet(code),
+    enabled: enabled,            
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
+};

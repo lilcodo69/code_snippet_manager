@@ -32,8 +32,26 @@ serve(async (req) => {
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    const prompt = `You are an expert code reviewer. Provide a brief, constructive analysis of the following code snippet. Focus on potential bugs, best practices, and suggestions for improvement. Format your response using markdown. Code:\n\n\`\`\`\n${codeToReview}\n\`\`\``;
+    const prompt = `
+You are an expert AI code reviewer. Your tone is professional and constructive.
+Analyze the following code snippet and provide feedback in a structured, easy-to-read format.
+Your response must be in Markdown and MUST include the following three sections using H3 (###) headers:
+### What's Done Well
+- Briefly mention 1-2 positive aspects (e.g., good variable names, clear logic, good use of hooks).
+### Potential Issues & Bugs
+- Clearly identify any critical bugs, type mismatches, or logical errors. Use bullet points.
+- If an issue is a critical concern, make the text **bold**.
 
+### Suggestions for Improvement
+- Provide actionable advice on best practices, performance, or readability. Use bullet points.
+- When suggesting a code change, include a small, corrected code example in a fenced code block.
+Do not provide a long, unstructured wall of text. Keep the analysis concise and focused on the key points.
+
+Here is the code to review:
+\`\`\`
+${codeToReview}
+\`\`\`
+`;
     const result = await model.generateContent(prompt);
     const response = result.response;
     const reviewText = response.text();

@@ -25,12 +25,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  const {
-    data: searchResults,
-    isLoading: isSearching,
-    isError: isSearchError,
-    error: searchError
-  } = useSearch(searchQuery);
+  const {   data: searchResults,   isLoading: isSearching,   isError: isSearchError,   error: searchError } = useSearch(searchQuery);
 
   
   const clearSearch = () => {

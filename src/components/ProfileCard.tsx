@@ -1,11 +1,18 @@
 import  { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext'; 
+import { useAuthActions } from '../hooks/useAuthActions';
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth(); 
   const dropdownRef = useRef<HTMLDivElement>(null);
+    const { signInWithOAuth } = useAuthActions();
  const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+
+
+ const handleSwitch=()=>{
+  signInWithOAuth("google");
+ }
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -58,14 +65,24 @@ const ProfileDropdown = () => {
 
           <div className="border-t border-gray-600"></div>
 
-          <div className="p-2">
-            <button
+          <div className="p-2 flex flex-col justify-center gap-2 items-center  transition-all duration-300 ease-out">
+         
+            <button onClick={handleSwitch} className='w-full  px-4 py-2  hover:bg-gray-600 rounded-md hover:text-blue-400 transition-all duration-300 ease-out'>
+              <img/>
+             <p>
+              Switch Account
+              </p> 
+            </button>
+
+             <button
               onClick={signOut}
-              className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-600 rounded-md"
+              className="w-full  px-4 py-2 text-sm text-red-400 hover:bg-gray-600 rounded-md transition-all duration-300 ease-out"
             >
               Sign Out
             </button>
           </div>
+           
+       
         </div>
       )}
     </div>

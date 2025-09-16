@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import { invokeEmbedFunction } from "../../services/supabase";
 
 import { useInsertSnippet } from "../../hooks/useInsertSnippet";
-
+import toast from 'react-hot-toast';
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet;
   // onClose?: () => void;
@@ -59,7 +59,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
 
   const onSubmit: SubmitHandler<CreateSnippetFormData> = async (data) => {
     if (!user) {
-      alert("User not logged in.");
+      toast.error("You must be logged in to save a snippet.");
       return;
     }
 
@@ -92,8 +92,11 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           },
           {
             onSuccess: () => {
-              alert("Snippet updated successfully!");
+              toast.success("Snippet updated successfully!");
               onCloseModal?.();
+            },
+             onError: (err) => {
+              toast.error(`Failed to update: ${err.message}`);
             },
           }
         );
@@ -105,7 +108,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
           },
           {
             onSuccess: () => {
-              alert("Snippet created successfully!");
+              toast.success("Snippet created successfully!");
               reset();
               onCloseModal?.();
             },
@@ -114,11 +117,11 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
       }
     } catch (error) {
       console.error("Failed to generate embedding or save snippet:", error);
+
       if (error instanceof Error) {
-        alert(`An error occurred: ${error.message}`);
+        toast.error(`An error occurred: ${error.message}`);
       } else {
-        alert("An unexpected error occurred. Please check the console.");
-      }
+ toast.error("An unexpected error occurred. Please check the console.");      }
     }
   };
 

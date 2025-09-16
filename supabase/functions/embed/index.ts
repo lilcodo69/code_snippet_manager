@@ -11,6 +11,9 @@ console.log("Edge Function 'embed' (using Google AI) is ready to run.");
 
 const API_KEY = Deno.env.get("GOOGLE_API_KEY");
 
+if (!API_KEY) {
+  throw new Error("Missing GOOGLE_API_KEY environment variable.");
+}
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })

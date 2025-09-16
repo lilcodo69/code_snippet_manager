@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateSnippet } from '../services/supabase';
 import type { CodeSnippet, CodeSnippetPayload } from '../type';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 type UpdateSnippetVariables = { id: string; updates: Partial<CodeSnippetPayload> };
 
@@ -16,11 +17,11 @@ export const useUpdateSnippet = () => {
       queryClient.invalidateQueries({ queryKey: ['snippets', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['recent-snippets', user?.id] });
       
-      console.log('Snippet updated successfully! Cache invalidated.');
+      toast.success('Snippet updated successfully!');
     },
     
     onError: (error) => {
-      console.error('Error updating snippet:', error.message);
+      toast.error(`Error updating snippet:, ${error.message}`);
     },
   });
 };
