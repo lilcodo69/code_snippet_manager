@@ -46,25 +46,25 @@ export const SnippetView = ({
   };
 
   return (
-    <div className="relative flex flex-col bg-zinc-800 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px]">
+    <div className="relative flex flex-col bg-zinc-900 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px]">
       <div className="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0 ">
         <h2 className="text-2xl font-bold truncate pr-4" title={snippet.title}>
           {snippet.title}
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 border-2 rounded-xl bg-zinc-700 overflow-clip border-zinc-500">
           {children}
 
           <Button
             onClick={handleCopy}
             isIconOnly={true}
-            className=" hover:bg-gray-600 "
+            className=""
             aria-label="Copy Code"
             title="Copy Code"
           >
             <img
               src="/img/copy.png"
               alt="Copy Code"
-              className="w-6 h-6 object-contain transition-transform group-hover:scale-110" // Icon size, scale on button hover
+              className="w-6 h-6 object-contain group-hover:scale-110" // Icon size, scale on button hover
             />
           </Button>
 
@@ -72,7 +72,7 @@ export const SnippetView = ({
             onClick={handleAiReview}
            
             isIconOnly={true}
-            className=" hover:bg-gray-700"
+            className=" "
             aria-label="AI Review Code"
             title="AI Review Code"
           >
@@ -89,7 +89,7 @@ export const SnippetView = ({
             <Modal.Open opens="create-snippet">
               <Button
                 isIconOnly={true}
-                className="bg-transparent hover:bg-gray-700"
+                className=""
                 aria-label="Edit Snippet"
                 title="Edit Snippet"
               >
@@ -111,7 +111,7 @@ export const SnippetView = ({
               aria-label="Close"
               title="Close"
             >
-              <HiOutlineX className="w-6 h-6" />
+              <HiOutlineX className="w-6 h-6 text-gray-300" />
             </Button>
           </Modal>
         </div>
@@ -160,7 +160,7 @@ export const SnippetView = ({
                   <ul className="list-disc pl-5 space-y-2" {...props} />
                 ),
 
-                code({ node: _node, inline, className, children, ...props }) {
+                code({ node: _node, inline:_inline, className, children, ...props }) {
                   const { ref: _ref, ...rest } = props;
                   const match = /language-(\w+)/.exec(className || "");
 
@@ -183,18 +183,18 @@ export const SnippetView = ({
                     };
 
                     return (
-                      <div className="relative group my-4">
+                      <div className="relative group my-4 bg-blue-500">
                         <Button
                           onClick={handleBlockCopy}
                           isIconOnly={true}
-                          className="absolute top-2 right-2 bg-gray-800 hover:bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-2 right-2 bg-gray-500 hover:bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
                           aria-label="Copy Code"
                           title="Copy Code"
                         >
                           <img
                             src="/img/copy.png"
                             alt="Copy Code"
-                            className="w-5 h-5 object-contain"
+                            className="w-5 h-5 object-contain "
                           />
                         </Button>
 

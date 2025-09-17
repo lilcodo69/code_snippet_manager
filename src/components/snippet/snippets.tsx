@@ -62,7 +62,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
             />
           </div>
 
-          <div className="flex flex-col flex-grow justify-between bg-slate-700 pt-2 pl-3 pb-2 pr-3">
+          <div className="flex flex-col flex-grow justify-between bg-slate-800 pt-2 pl-3 pb-2 pr-3">
             <div>
               <h1
                 className="font-mono font-semibold truncate"
@@ -83,7 +83,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
               <Modal.Open opens={`view-snippet-${snippet.id}`}>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className="transition-colors duration-350 ease-in-out hover:text-white hover:bg-blue-500 hover:font-semibold bg-white px-[0.8rem] py-[0.3rem] rounded-lg text-blue-500 font-medium"
+                  className="border-2 hover:text-blue-300 active:ring active:ring-blue-400  active:outline-none over: transition-colors duration-350 ease-in-out  px-[0.8rem] py-[0.3rem] rounded-lg  font-medium"
                 >
                   Open
                 </button>
@@ -91,7 +91,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
 
               <button
                 onClick={handleDelete}
-                className="transition-colors duration-350 ease-in-out bg-red-500 px-2 text-white hover:text-red-500 hover:bg-red-50 rounded-lg font-semibold"
+                className="transition-colors duration-350 ease-in-out px-2 border-2 hover:text-red-500 rounded-lg font-semibold"
               >
                 Remove
               </button>

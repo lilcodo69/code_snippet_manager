@@ -9,6 +9,7 @@ import { invokeEmbedFunction } from "../../services/supabase";
 
 import { useInsertSnippet } from "../../hooks/useInsertSnippet";
 import toast from 'react-hot-toast';
+import { LoadingSpinner } from "../../ui/LoadingSpinner";
 interface SnippetFormProps {
   initialSnippet?: CodeSnippet;
   // onClose?: () => void;
@@ -149,16 +150,16 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-gray-900 p-6 rounded-lg shadow-lg mb-8 min-w-[30rem]"
+      className="bg-zinc-900 p-6 rounded-lg shadow-lg mb-8 min-w-[39rem]"
     >
-      <h2 className="text-2xl font-bold text-white mb-6">
+      <h2 className="text-2xl font-bold text-zinc-400 mb-6">
         {initialSnippet ? "Edit Snippet" : "Create New Snippet"}
       </h2>
 
       <div className="mb-4">
         <label
           htmlFor="title"
-          className="block text-gray-300 text-sm font-bold mb-2"
+          className="block text-zinc-500 text-md font-bold mb-2"
         >
           Title
         </label>
@@ -172,7 +173,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               message: "Title cannot exceed 50 characters.",
             },
           })}
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tightflkv   focus:ring    focus:ring-zinc-400    focus:ring-opacity-20    focus:outline-none  bg-zinc-900 text-zinc-400 text-md border-gray-600"
           placeholder="e.g., React Hooks Best Practices"
           disabled={isLoading}
         />
@@ -186,14 +187,14 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
       <div className="mb-4">
         <label
           htmlFor="code"
-          className="block text-gray-300 text-sm font-bold mb-2"
+          className="block text-zinc-400 text-md font-bold mb-2"
         >
           Code
         </label>
         <textarea
           id="code"
           {...register("code", { required: "Code is required" })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600 h-32 font-mono"
+          className="shadow  appearance-none border rounded w-full py-2 px-3 leading-tight  focus:ring    focus:ring-zinc-400    focus:ring-opacity-20    focus:outline-none  bg-zinc-800 text-zinc-200 text-md border-gray-600 h-32 font-mono"
           placeholder={`function App() {\n  // your code here\n}`}
           disabled={isLoading}
         ></textarea>
@@ -207,18 +208,18 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
       <div className="mb-4">
         <label
           htmlFor="language"
-          className="block text-gray-300 text-sm font-bold mb-2"
+          className="block text-zinc-400 text-md font-bold mb-2"
         >
           Language
         </label>
-        <input
-          id="language"
-          type="text"
-          {...register("language", { required: "Language is required" })}
-          className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
-          placeholder="e.g., javascript, typescript, python"
-          disabled={isLoading}
-        />
+     <input
+  id="tags"
+  type="text"
+  {...register("tags")}
+  className="   border    rounded    w-full    py-2    px-3    leading-tight    focus:ring    focus:ring-zinc-400    focus:ring-opacity-20    focus:outline-none    bg-zinc-800    text-zinc-200    text-md    border-gray-600 "
+  placeholder="e.g., react, hooks, state, frontend"
+  disabled={isLoading}
+/>
         {errors.language && (
           <p className="text-red-500 text-xs italic mt-1">
             {errors.language.message}
@@ -229,7 +230,7 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
       <div className="mb-4">
         <label
           htmlFor="description"
-          className="block text-gray-300 text-sm font-bold mb-2"
+          className="block text-zinc-400 text-md font-bold mb-2"
         >
           Description (Optional)
         </label>
@@ -243,7 +244,24 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
               return wordCount <= 60 || "Description must be 60 words or less.";
             },
           })}
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600 h-24"
+          className=" shadow 
+    appearance-none 
+    border 
+    rounded 
+    w-full 
+    py-2 
+    px-3 
+    leading-tight 
+    focus:outline-none 
+    bg-zinc-800 
+    text-zinc-200 
+    text-md 
+    border-gray-600
+    
+    focus:ring 
+    focus:ring-zinc-300 
+    focus:ring-opacity-20
+    h-20"
           placeholder="A brief explanation of the code"
           disabled={isLoading}
         ></textarea>
@@ -252,32 +270,50 @@ export const SnippetForm: React.FC<SnippetFormProps> = ({
       <div className="mb-6">
         <label
           htmlFor="tags"
-          className="block text-gray-300 text-sm font-bold mb-2"
+          className="block text-zinc-400  text-md font-bold mb-2"
         >
           Tags (Comma-separated, Optional)
         </label>
-        <input
-          id="tags"
-          type="text"
-          {...register("tags")}
-          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-gray-700 text-white border-gray-600"
-          placeholder="e.g., react, hooks, state, frontend"
-          disabled={isLoading}
-        />
+       <input
+  id="tags"
+  type="text"
+  {...register("tags")}
+  className="
+    shadow 
+    appearance-none 
+    border 
+    rounded 
+    w-full 
+    py-2 
+    px-3 
+    leading-tight 
+    focus:outline-none 
+    bg-zinc-800 
+    text-zinc-200 
+    text-md 
+    border-gray-600
+    
+    focus:ring 
+    focus:ring-zinc-300 
+    focus:ring-opacity-20
+  "
+  placeholder="e.g., react, hooks, state, frontend"
+  disabled={isLoading}
+/>
       </div>
 
       <button
         type="submit"
         disabled={isLoading}
-        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
+        className="border-zinc-500 border-2 hover:bg-zinc-800 hover:text-zinc-400    text-zinc-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {buttonText}
+        { !isLoading? ` ${buttonText}`: <LoadingSpinner/>}
       </button>
 
       <button
         type="button"
         onClick={onCloseModal}
-        className="ml-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
+        className="border-zinc-500 border-2 ml-4 hover:bg-zinc-800 hover:text-zinc-400    text-zinc-400 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Cancel
       </button>
