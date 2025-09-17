@@ -6,6 +6,7 @@ import { SnippetView } from "./SnippetView";
 import { useDeleteSnippet } from "../../hooks/useDeleteSnippet";
 import { useUpdateSnippet } from "../../hooks/useUpdateSnippet";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface SnippetCardProps {
   snippet: CodeSnippet;
@@ -28,8 +29,21 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
 
     const newPinStatus = !isPinned;
     setIsPinned(newPinStatus);
-    updatePinStatus({ id: snippet.id, updates: { is_pinned: newPinStatus } });
-  };
+    updatePinStatus({ id: snippet.id, updates: { is_pinned: newPinStatus } },{  onSuccess: () => {
+                const message = newPinStatus ? "Snippet pinned!" : "Snippet unpinned!";
+                toast.success(message);
+            },
+            onError: () => {
+                setIsPinned(!newPinStatus); 
+                toast.error("Failed to update pin status. Please try again.");
+                // console.error("Pin update failed:", error);
+            }
+        }
+    );
+}
+
+;
+
 
   return (
     <Modal>

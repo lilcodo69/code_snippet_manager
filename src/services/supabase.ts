@@ -6,6 +6,7 @@ export const getAllSnippets = async (userId: string, limit?: number): Promise<Co
     .from('codesnippet')
     .select('*')
     .eq('user_id', userId)
+     .order('is_pinned', { ascending: false })
     .order('created_at', { ascending: false }); 
   
   if (limit) {
