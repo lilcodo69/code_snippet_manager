@@ -16,8 +16,7 @@ export const useUpdateSnippet = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['snippets', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['recent-snippets', user?.id] });
-      
-      toast.success('Snippet updated successfully!');
+
     },
     
     onError: (error) => {

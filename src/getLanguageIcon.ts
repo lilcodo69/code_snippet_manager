@@ -1,8 +1,4 @@
-
-
-
-
-export const getLanguageIcon = (language:string) => {
+export  const getLanguageIcon = (language: string): string => {
   const icons = {
     'javascript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
     'js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
@@ -26,7 +22,6 @@ export const getLanguageIcon = (language:string) => {
     'kotlin': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
     'kt': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg',
     
-
     'html': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
     'html5': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
     'css': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
@@ -74,13 +69,16 @@ export const getLanguageIcon = (language:string) => {
     
     'default': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/code/code-original.svg'
   };
-  
-type IconKeys = keyof typeof icons;
-const normalizedLanguage: IconKeys = language.toLowerCase() as IconKeys;
-  
-  return icons[normalizedLanguage]  || icons['default'];
+
+  type IconKeys = keyof typeof icons;
+
+  const normalizedLanguage = language
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W]+/g, '');
+
+
+  const iconUrl = icons[normalizedLanguage as IconKeys] || icons.default;
+
+  return iconUrl;
 };
-
-
-
-export default getLanguageIcon;

@@ -78,7 +78,7 @@ export const matchCodeSnippets = async (embedding_vectors: number[]): Promise<Sn
 
   const { data, error } = await supabase.rpc('match_code_snippets', {
     query_embedding: embedding_vectors,
-    match_threshold: 0.7,
+    match_threshold: 0.4,
     match_count: 5,
   });
   if (error) throw error;

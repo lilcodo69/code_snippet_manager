@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface CodeSnippet {
   id: string;
 
@@ -45,3 +47,12 @@ export type SnippetSearchResult = CodeSnippet & {
 export type CodeSnippetPayload = Omit<CodeSnippet, "embedding_vectors"> & {
   embedding_vectors: string;
 };
+
+export interface CustomCodeProps {
+  node?: any; 
+  inline?: boolean;
+  className?: string;
+  // language:RegExp
+  children?: ReactNode;
+  [key: string]: any;
+}

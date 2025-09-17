@@ -2,7 +2,7 @@ import ReactMarkdown from "react-markdown";
 
 import { SlideOverPanel } from "../../ui/SlideOverPanel";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import type { CodeSnippet } from "../../type";
+import type { CodeSnippet ,CustomCodeProps} from "../../type";
 import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Button } from "../Button";
 import {useReview} from "../../hooks/useReview";
@@ -13,6 +13,7 @@ import { HiOutlineX } from "react-icons/hi";
 import  {reviewSnippet}  from "../../services/supabase";
 import { toast } from "react-toastify";
 import { LoadingSpinner } from "../../ui/LoadingSpinner";
+
 
 interface SnippetViewProps {
   snippet: CodeSnippet;
@@ -138,89 +139,87 @@ export const SnippetView = ({
             {snippet.code}
           </SyntaxHighlighter>
         </div>
-        <SlideOverPanel
-          isOpen={isReviewPanelOpen}
-          onClose={() => setIsReviewPanelOpen(false)}
-          title="AI Code Review"
-        >
-          {isPending && <LoadingSpinner message="Analyzing your code..." />}
+       <SlideOverPanel
+  isOpen={isReviewPanelOpen}
+  onClose={() => setIsReviewPanelOpen(false)}
+  title="AI Code Review"
+>
+  {isPending && (
+    <div className="flex h-full items-center justify-center">
+      <LoadingSpinner message="Analyzing your code..." sizeClass="h-10 w-10" />
+    </div>
+  )}
 
-          {reviewData && (
-            <ReactMarkdown
-              children={reviewData.review}
-              components={{
-                h3: ({ node, ...props }) => (
-                  <h3
-                    className="text-lg font-semibold text-blue-400 mt-6 mb-2 border-b border-gray-600 pb-2"
-                    {...props}
+  {reviewData && (
+    <ReactMarkdown
+      children={reviewData.review}
+      components={{
+        h3: ({  node: _node, ...props }) => (
+          <h3
+            className="text-lg font-semibold text-blue-400 mt-6 mb-2 border-b border-gray-600 pb-2"
+            {...props}
+          />
+        ),
+        ul: ({  node: _node, ...props }) => (
+          <ul className="list-disc pl-5 space-y-2" {...props} />
+        ),
+        code({  node: _node, inline, className, children, ...props }:CustomCodeProps) {
+          const match = /language-(\w+)/.exec(className || "");
+          
+          if (inline) {
+            return (
+              <code
+                className={`${className} bg-zinc-700 rounded-sm px-1.5 py-1 font-mono text-sm`}
+                {...props}
+              >
+                {children}
+              </code>
+            );
+          }
+
+          if (match) {
+            const handleBlockCopy = () => {
+              const codeString = String(children).replace(/\n$/, "");
+              navigator.clipboard.writeText(codeString);
+              toast.success("AI suggestion copied!");
+            };
+            
+            return (
+              <div className="relative group my-4 bg-zinc-800 rounded-2xl">
+                <Button
+                  onClick={handleBlockCopy}
+                  isIconOnly={true}
+                  className="absolute top-2 right-2 bg-zinc-600 hover:bg-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Copy Code"
+                  title="Copy Code"
+                >
+                  <img
+                    src="/img/copy.png"
+                    alt="Copy Code"
+                    className="w-5 h-5 object-contain"
                   />
-                ),
-
-                ul: ({ node, ...props }) => (
-                  <ul className="list-disc pl-5 space-y-2" {...props} />
-                ),
-
-                code({ node: _node, inline:_inline, className, children, ...props }) {
-                  const { ref: _ref, ...rest } = props;
-                  const match = /language-(\w+)/.exec(className || "");
-
-                  if (inline) {
-                    return (
-                      <code
-                        className={`${className} bg-gray-700 rounded-sm px-1 py-0.5 font-mono text-sm`}
-                        {...props}
-                      >
-                        {children}
-                      </code>
-                    );
-                  }
-
-                  if (match) {
-                    const handleBlockCopy = () => {
-                      const codeString = String(children).replace(/\n$/, "");
-                      navigator.clipboard.writeText(codeString);
-                      toast.success("AI suggestion copied!");
-                    };
-
-                    return (
-                      <div className="relative group my-4 bg-blue-500">
-                        <Button
-                          onClick={handleBlockCopy}
-                          isIconOnly={true}
-                          className="absolute top-2 right-2 bg-gray-500 hover:bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
-                          aria-label="Copy Code"
-                          title="Copy Code"
-                        >
-                          <img
-                            src="/img/copy.png"
-                            alt="Copy Code"
-                            className="w-5 h-5 object-contain "
-                          />
-                        </Button>
-
-                        <SyntaxHighlighter
-                          style={tomorrow as any}
-                          language={match[1]}
-                          PreTag="div"
-                          {...rest}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-            />
-          )}
-        </SlideOverPanel>
+                </Button>
+                <SyntaxHighlighter
+                  style={tomorrow}
+                  language={match[1]}
+                  PreTag="div"
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </div>
+            );
+          }
+          
+          return (
+             <code className="bg-zinc-700" {...props}>{children}</code>
+          );
+        },
+      }}
+    />
+  )}
+</SlideOverPanel>
       </div>
     </div>
   );
-};
+}

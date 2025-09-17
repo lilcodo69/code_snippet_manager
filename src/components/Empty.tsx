@@ -9,7 +9,7 @@ type EmptyStateProps = {
 
 export const Empty = ({ title, message, imageUrl, children }: EmptyStateProps) => {
   return (
-    <div className="text-center py-16 px-4 bg-gray-800/50 rounded-lg">
+    <div className="text-center py-16 px-4  border-zinc-700 border-2 rounded-lg ">
       <div className="mb-6 flex justify-center items-center">
         {imageUrl ? (
           <img 
@@ -22,7 +22,7 @@ export const Empty = ({ title, message, imageUrl, children }: EmptyStateProps) =
         )}
       </div>
 <div className='flex flex-col justify-center items-center gap-4 '>
-  <h3 className="text-2xl font-bold text-white mb-4">
+  <h3 className="text-2xl font-bold text-zinc-400 text-center mb-4">
         {title}
       </h3>
       <p className="text-gray-400 text-lg mb-8 max-w-md mx-auto">

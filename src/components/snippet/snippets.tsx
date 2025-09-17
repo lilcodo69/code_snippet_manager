@@ -1,5 +1,5 @@
 import type { CodeSnippet } from "../../type/index";
-import getLanguageIcon from "../../getLanguageIcon";
+import {getLanguageIcon} from "../../getLanguageIcon";
 import { HiBookmark } from "react-icons/hi";
 import Modal from "../../ui/Modal";
 import { SnippetView } from "./SnippetView";
@@ -62,15 +62,15 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
             />
           </div>
 
-          <div className="flex flex-col flex-grow justify-between bg-slate-800 pt-2 pl-3 pb-2 pr-3">
+          <div className="flex flex-col flex-grow justify-between border-2 border-gray-600 rounded-b-lg pt-2 pl-3 pb-2 pr-3">
             <div>
               <h1
-                className="font-mono font-semibold truncate"
+                className="font-mono font-bold truncate text-lg mb-1 text-zinc-300 "
                 title={snippet.title}
               >
                 {snippet.title}
               </h1>
-              <div className="overflow-hidden">
+              <div className="overflow-hidden font-mono text-zinc-300">
                 <p className="line-clamp-2" title={snippet.description}>
                   {snippet.description
                     ? snippet.description
@@ -83,7 +83,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
               <Modal.Open opens={`view-snippet-${snippet.id}`}>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className="border-2 hover:text-blue-300 active:ring active:ring-blue-400  active:outline-none over: transition-colors duration-350 ease-in-out  px-[0.8rem] py-[0.3rem] rounded-lg  font-medium"
+                  className="border-2 border-zinc-400 hover:text-blue-300 active:ring active:ring-blue-400  active:outline-none over: transition-colors duration-350 ease-in-out  px-[0.8rem] py-[0.3rem] rounded-lg  font-medium"
                 >
                   Open
                 </button>
@@ -91,7 +91,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
 
               <button
                 onClick={handleDelete}
-                className="transition-colors duration-350 ease-in-out px-2 border-2 hover:text-red-500 rounded-lg font-semibold"
+                className=" border-zinc-400 transition-colors duration-350 ease-in-out px-2 border-2 hover:text-red-500 rounded-lg font-semibold"
               >
                 Remove
               </button>

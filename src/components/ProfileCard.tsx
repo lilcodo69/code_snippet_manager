@@ -32,7 +32,7 @@ const ProfileDropdown = () => {
     <div className="relative ml-3" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)} 
-        className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-600 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all"
+        className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-600 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset- focus:ring-offset-gray-800 transition-all"
       >
         <img
           className="w-full h-full object-cover"
@@ -43,7 +43,7 @@ const ProfileDropdown = () => {
 
       {isOpen && (
         <div
-          className="absolute right-0 mt-2 w-[20rem] bg-gray-700 rounded-lg shadow-xl z-50"
+          className="absolute right-0 mt-2 w-[20rem] bg-zinc-700 rounded-lg shadow-xl z-50"
         >
           <div className="p-4">
             <div className="flex items-center gap-4">
@@ -73,6 +73,7 @@ const ProfileDropdown = () => {
               Switch Account
               </p> 
             </button>
+<div className='border border-zinc-600 w-full'></div>
 
              <button
               onClick={signOut}

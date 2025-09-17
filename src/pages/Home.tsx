@@ -20,6 +20,7 @@ export const Home = () => {
 
   const isLoading = isSearchMode ? isSearching : isRecentLoading;
 
+const hassnippets = recentSnippets && recentSnippets.length > 0;
 
   const error = isSearchMode ? searchError : recentError;
   const snippetsToDisplay = isSearchMode ? searchResults : recentSnippets;
@@ -31,7 +32,7 @@ export const Home = () => {
  if(!user) return ;
   return (
     <Modal>
-      {!isSearchMode  && (
+      {!isSearchMode  && hassnippets?
         <PageHeader title={pageTitle}>
           <Modal.Open opens="create-snippet">
             <Button className="rounded-md font-semibold bg-green-500 hover:bg-green-600">
@@ -39,29 +40,36 @@ export const Home = () => {
             </Button>
           </Modal.Open>
         </PageHeader>
-      )}
+      :""}
 
-      <div className="mt-[4.1rem]">
+      <div className=" flex flex-col flex-1">
         {isLoading && <LoadingSpinner message="Fetching snippets..." />}
         
         {error && <ErrorMessage message={(error as Error)?.message} />}
         
         {showInitialEmptyState && (
-          <Empty 
-            title="No Code Snippets Yet" 
-            message="Start building your personal code library! Create your first snippet to save and organize your code."
-          >
-            <Modal.Open opens="create-snippet">
-              <Button className="rounded-md font-semibold bg-green-500 hover:bg-green-600">
-                + Create Your First Snippet
-              </Button>
-            </Modal.Open>
-          </Empty>
+       <div className="flex flex-1 h-[70vh] items-center justify-center ">
+            <Empty 
+              title="No Code Snippets Yet"
+              message="Start building your personal code library! Create your first snippet to save and organize your code."
+            >
+              <Modal.Open opens="create-snippet">
+                <Button className="rounded-md font-semibold bg-green-500 hover:bg-green-600">
+                  + Create Your First Snippet
+                </Button>
+              </Modal.Open>
+            </Empty>
+          </div>
         )}
 
-        {showNoSearchResults && <NoSearchResults searchQuery={searchQuery} />}
+        {showNoSearchResults &&<div className='flex justify-center items-center h-[70vh]'>
+<NoSearchResults searchQuery={searchQuery} />
+        </div> }
         
-        {showGrid && <SnippetsGrid snippets={snippetsToDisplay} />}
+     <div className='mt-20'>
+{showGrid && <SnippetsGrid snippets={snippetsToDisplay} />}
+
+      </div>   
       </div>
 
       <Modal.Window name="create-snippet">

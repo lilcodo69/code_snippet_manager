@@ -30,7 +30,7 @@ export const SlideOverPanel = ({
 
       <div
         className={clsx(
-          "fixed top-0 bottom-0 right-0 w-full max-w-[40rem] bg-gray-800 text-white shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col",
+          "fixed top-0 bottom-0 right-0 w-full max-w-[40rem] bg-zinc-800 text-zinc-300 shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
