@@ -47,7 +47,7 @@ export const SnippetView = ({
   };
 
   return (
-    <div className="relative flex flex-col bg-zinc-900 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px]">
+    <div className="relative flex flex-col bg-zinc-900 text-white rounded-lg shadow-2xl w-[60rem] max-w-[95vw] h-[85vh] max-h-[900px] overflow-clip">
       <div className="flex justify-between items-center p-4 border-b border-gray-700 flex-shrink-0 ">
         <h2 className="text-2xl font-bold truncate pr-4" title={snippet.title}>
           {snippet.title}

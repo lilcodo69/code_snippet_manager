@@ -1,69 +1,129 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# CodeKeep AI: The Intelligent Code Snippet Manager
 
-Currently, two official plugins are available:
+CodeKeep AI is a full-stack application designed to be an intelligent code vault for developers. It directly tackles the laborious task of writing boilerplate code by providing a centralized platform to save, find, and refine snippets. Going beyond simple storage, CodeStash AI uses ai enabled semantic search to help you find code based on its *functionality*, not just keywords. It also integrates an AI-powered review system to instantly analyze your snippets, identify potential bugs, and suggest more robust implementations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br>
 
-## Expanding the ESLint configuration
+## Live Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**[Link to your live deployed application]**
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<br>
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Key Features in Action
+
+### AI-Powered Semantic Search
+Find snippets based on *what they do*, not just the words you use. Ask "how to make a network request in React" and find your custom hook instantly.
+
+*(Placeholder for your Semantic Search GIF)*
+`![Semantic Search GIF](https://your-link-to-search-gif)`
+
+### Automated AI Code Review
+Get instant feedback on your code. Our integrated AI, powered by the Google Gemini API, identifies potential bugs, highlights security risks, and suggests improvements on demand.
+
+*(Placeholder for your AI Code Review GIF)*
+`![AI Code Review GIF](https://your-link-to-review-gif)`
+
+### Create, Edit, and Organize with Ease
+A clean and intuitive interface for managing your code. Create new snippets, add language-specific notes with Markdown support, and edit with full syntax highlighting.
+
+*(Placeholder for your Creating/Editing a Snippet GIF)*
+`![Create and Edit GIF](https://your-link-to-create-gif)`
+
+### Pin Your Favorites
+Keep your most-used snippets just a click away. Pin and unpin snippets for quick access right from your dashboard.
+
+*(Placeholder for your Pinning Snippet GIF)*
+`![Pinning Snippet GIF](https://your-link-to-pin-gif)`
+
+---
+
+
+
+
+## Tech Stack & Architecture
+
+This project was built with a modern, scalable, and type-safe stack.
+
+| Category                | Technology                                                                                                                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Frontend**            | **React**, **TypeScript**, **Vite**, **Tailwind CSS**                                                                                                                                                    |
+| **Backend & Database**  | **Supabase** (Authentication, Storage, PostgreSQL), **Supabase Edge Functions**                                                                                                                        |
+| **AI & Vector Search**  | **Google AI (Gemini)**, **Supabase pgvector**                                                                                                                                                          |
+| **Data Fetching**       | **TanStack React Query** for server state management, caching, and optimistic updates.                                                                                                                   |
+| **Form Management**     | **React Hook Form** for performant and maintainable forms.                                                                                                                                             |
+| **UI & UX**             | **React Icons**, **react-hot-toast** for notifications, **react-markdown**                                                                                                                             |
+| **Code Highlighting**   | **react-syntax-highlighter**                                                                                                                                                                           |
+| **Linting & Tooling**   | **ESLint**, **TypeScript-ESLint**, **Prettier**                                                                                                                                                        |
+
+---
+
+## Project Structure
+
+The project maintains a clear separation between client-side code (`/src`), serverless functions (`/supabase`), and project configuration at the root level.
+
+```
+/
+|-- /public               # Static assets
+|-- /src                  # Frontend source code
+|   |-- /assets
+|   |-- /components       # Reusable components
+|   |-- /context
+|   |-- /hooks
+|   |-- /pages
+|   |-- /services         # API layer for fetching data
+|   |-- /type             # TypeScript type definitions
+|   |-- /ui               # Low-level UI primitives
+|   |-- App.tsx
+|   |-- main.tsx
+|   +-- supabaseClient.ts # Supabase client instance
+|-- /supabase
+|   +-- /functions        # Serverless Edge Functions
+|-- .env.local            # Environment variables
+|-- index.html
+|-- package.json
++-- vite.config.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+-   Node.js (v18 or later)
+-   Supabase CLI (for local edge function development)
+
+### Installation
+
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your-username/code-snippet-manager.git
+    cd code-snippet-manager
+    ```
+
+2.  **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3.  **Set up your environment variables:**
+    Create a `.env.local` file in the root of the project. You can get these values from your Supabase and Google AI project dashboards.
+
+    ```env
+    VITE_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
+    VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+    GOOGLE_API_KEY=YOUR_GOOGLE_AI_API_KEY
+    ```
+
+4.  **Run the development server:**
+    ```sh
+    npm run dev
+    ```
+    The application should now be running on `http://localhost:5173`.
+
