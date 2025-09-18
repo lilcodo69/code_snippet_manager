@@ -37,7 +37,7 @@ export const Home = () => {
         {showInitialEmptyState ? (
           <div className="flex flex-1 items-center justify-center">
             <Empty
-              title="Your Code Stash is Ready"
+              title="Your CodeStash is Ready"
               message="It's a little quiet in here. Create your first code snippet to build your personal library and access your best solutions anytime."
             >
               <Modal.Open opens="create-snippet">

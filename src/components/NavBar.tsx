@@ -26,7 +26,7 @@ export const Navbar = () => {
             <div className="flex-1"></div>
 
             <div className="text-[1.6rem] font-bold">
-              <span>CodeStashIn</span>
+              <span>CodeStash</span>
             </div>
 
             <div className="flex flex-1 items-center justify-end gap-4">

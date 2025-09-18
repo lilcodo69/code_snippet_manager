@@ -3,13 +3,14 @@ import { useAuth } from '../context/AuthContext';
 
 export const useAuthActions = () => {
   const { signOut: contextSignOut } = useAuth();
+const redirectUrl = import.meta.env.VITE_SITE_URL;
 
   const signInWithOAuth = async (provider: 'google' | 'github') => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: redirectUrl
         },
       });
       if (error) throw error;

@@ -91,7 +91,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
               <Modal.Open opens={`view-snippet-${snippet.id}`}>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className="border-2 border-zinc-400 hover:text-blue-300 active:ring active:ring-blue-400  active:outline-none over: transition-colors duration-350 ease-in-out  px-[0.8rem] py-[0.3rem] rounded-lg  font-medium"
+                  className="border-2 border-zinc-400 hover:text-blue-700 active:ring active:ring-blue-400  active:outline-none over: transition-colors duration-350 ease-in-out  px-[0.8rem] py-[0.3rem] rounded-lg  font-medium"
                 >
                   Open
                 </button>

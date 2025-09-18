@@ -83,7 +83,7 @@ export const SnippetView = ({
           >
           
               <img
-                src="/img/ai1.png"
+                src="/img/ai img.png"
                 alt="AI Review"
                 className="w-7 h-7 object-contain transition-transform group-hover:scale-110  "
               />
