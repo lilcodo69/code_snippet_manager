@@ -9,10 +9,12 @@ import {useReview} from "../../hooks/useReview";
 import { useState } from "react";
 import SnippetForm from "./SnippetForm";
 import Modal from "../../ui/Modal";
-import { HiOutlineX } from "react-icons/hi";
+import { HiClipboardCopy, HiOutlineX, HiStar } from "react-icons/hi";
 import  {reviewSnippet}  from "../../services/supabase";
 import { toast } from "react-toastify";
 import { LoadingSpinner } from "../../ui/LoadingSpinner";
+import { HiPencil } from "react-icons/hi2";
+import { AiFillStar } from "react-icons/ai";
 
 
 interface SnippetViewProps {
@@ -62,11 +64,14 @@ export const SnippetView = ({
             aria-label="Copy Code"
             title="Copy Code"
           >
-            <img
+           <HiClipboardCopy className="text-zinc-200 h-7 w-7 group-hover:scale-110" />
+
+
+            {/* <img
               src="/img/copy.png"
               alt="Copy Code"
               className="w-6 h-6 object-contain group-hover:scale-110" // Icon size, scale on button hover
-            />
+            /> */}
           </Button>
 
           <Button
@@ -77,11 +82,11 @@ export const SnippetView = ({
             aria-label="AI Review Code"
             title="AI Review Code"
           >
-           
+          
               <img
-                src="/img/ai img.png"
+                src="/img/ai1.png"
                 alt="AI Review"
-                className="w-6 h-6 object-contain transition-transform group-hover:scale-110"
+                className="w-7 h-7 object-contain transition-transform group-hover:scale-110  "
               />
           
           </Button>
@@ -94,11 +99,12 @@ export const SnippetView = ({
                 aria-label="Edit Snippet"
                 title="Edit Snippet"
               >
-                <img
+                <HiPencil className="text-zinc-200 h-6 w-6 group-hover:scale-110" />
+                {/* <img
                   src="/img/edit.png"
                   alt="Edit Snippet"
                   className="w-6 h-6 object-contain transition-transform group-hover:scale-110"
-                />
+                /> */}
               </Button>
             </Modal.Open>
 
