@@ -9,12 +9,11 @@ import {useReview} from "../../hooks/useReview";
 import { useState } from "react";
 import SnippetForm from "./SnippetForm";
 import Modal from "../../ui/Modal";
-import { HiClipboardCopy, HiOutlineX, HiStar } from "react-icons/hi";
+import { HiClipboardCopy, HiOutlineX } from "react-icons/hi";
 import  {reviewSnippet}  from "../../services/supabase";
 import { toast } from "react-toastify";
 import { LoadingSpinner } from "../../ui/LoadingSpinner";
 import { HiPencil } from "react-icons/hi2";
-import { AiFillStar } from "react-icons/ai";
 
 
 interface SnippetViewProps {
