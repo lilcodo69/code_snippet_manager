@@ -1,83 +1,60 @@
-import { useAuth } from "../../context/AuthContext";
-import type { CodeSnippet, SnippetSearchResult } from "../../type";
-import { SnippetCard } from "./snippets";
 
-import Modal from "../../ui/Modal";
-import { Button } from "../Button";
-import { SnippetForm } from "./SnippetForm";
-import { useSearchContext } from "../../context/searchBarContext";
 
-type SnippetOrSearchResult = CodeSnippet | SnippetSearchResult ;
+import { useSnippets } from '../../context/snippetContext';
+import { ErrorMessage } from '../../pages/ErrorMessage';
+import { NoSearchResults } from '../../pages/NoSearchResults';
+import { LoadingSpinner } from '../../ui/LoadingSpinner';
+import Modal from '../../ui/Modal'; 
+import { SnippetCard } from './snippets';
 
-interface RecentSnippetsProps {
-  snippets?: SnippetOrSearchResult[];
-  isLoading?: boolean;
-  error?: Error | null;
-}
 
-const SnippetsGrid = ({
-  snippets,
-  isLoading,
-  error,
-}: RecentSnippetsProps) => {
-  const { user } = useAuth();
-  const { isSearchMode } = useSearchContext();
 
-  if (!user) {
-    return (
-      <div className="bg-blue-800 p-4 rounded-lg text-white text-center">
-        Please log in to see your snippets.
-      </div>
-    );
-  }
+const SnippetsGrid = () => {
+  const { snippetsToDisplay, isLoading, error, isSearchMode, searchQuery } = useSnippets();
 
   if (isLoading) {
     return (
-      <div className="text-center text-white">Loading recent snippets...</div>
+      <div className="flex flex-1 items-center justify-center ">
+        <LoadingSpinner 
+          message={isSearchMode ? 'Searching...' : 'Fetching snippets...'} 
+          sizeClass="h-12 w-12"
+        />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-red-500 text-center">
-        Error loading snippets: {error.message}
+      <div className="flex flex-1 items-center justify-center">
+        <ErrorMessage message={error.message} />
       </div>
     );
   }
 
-  return (
-    <div className="">
-      {(snippets && snippets.length > 0) || isSearchMode ? (
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-          {snippets?.map((snippet) => (
-            <SnippetCard key={snippet.id} snippet={snippet} />
-          ))}
+  if (isSearchMode && snippetsToDisplay.length === 0) {
+    return (
+       <div className='flex flex-1 items-center justify-center'>
+            <NoSearchResults searchQuery={searchQuery} />
         </div>
-      ) : (
-        <div className="text-center py-8 bg-gray-800 rounded-lg">
-          <p className="text-gray-400 text-lg mb-4">
-            You haven't created any snippets yet.
-          </p>
-          <p className="text-gray-500 mb-6">
-            Click the button below to create your first one!
-          </p>
+    );
+  }
 
-          <Modal>
-            <Modal.Open opens="create-snippet">
-              <Button className="rounded-md text-semibold bg-green-500">
-                + Create New Snippet
-              </Button>
-            </Modal.Open>
+ 
+  if (snippetsToDisplay.length > 0) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6 mt-[3rem]">
+        {snippetsToDisplay.map((snippet) => (
+          <Modal.Open key={snippet.id} opens="view-snippet">
+            <SnippetCard 
+              snippet={snippet}
+            />
+          </Modal.Open>
+        ))}
+      </div>
+    );
+  }
 
-            <Modal.Window name="create-snippet">
-              <SnippetForm />
-            </Modal.Window>
-          </Modal>
-        </div>
-      )}
-    </div>
-  );
+  return null;
 };
 
 export default SnippetsGrid;

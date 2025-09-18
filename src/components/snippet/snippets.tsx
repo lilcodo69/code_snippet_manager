@@ -49,13 +49,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
     <Modal>
       <Modal.Open opens={`view-snippet-${snippet.id}`}>
         <div
-          className="group 
-                    rounded-lg 
-                    overflow-hidden 
-                    transform transition-all duration-300 ease-in-out 
-                    hover:cursor-pointer hover:shadow-2xl 
-                    w-full
-                    flex flex-col h-full"
+          className="group  rounded-lg  overflow-hidden  hover:scale-105 transform transition-all duration-300 ease-in-out  hover:cursor-pointer hover:shadow-2xl  w-full flex flex-col h-full"
         >
           <div className="h-[9.9rem] w-full relative">
             <div className="flex absolute justify-center items-center top-[-0.6rem] left-[-0.3rem] z-10 gap-3">
@@ -72,7 +66,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
 
             <img
               src={`${getLanguageIcon(snippet.language)}`}
-              className="h-full w-full object-contain bg-white"
+              className="h-full w-full object-contain bg-white "
             />
           </div>
 

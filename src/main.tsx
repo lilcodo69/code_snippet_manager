@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { SearchProvider } from "./context/searchBarContext.tsx";
 import { Toaster } from 'react-hot-toast';
+import { SnippetsProvider } from "./context/snippetContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <SearchProvider>
+        <SnippetsProvider>
+
          <BrowserRouter>
 
           <App />
@@ -28,8 +31,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           color: '#fff',
         },
       }}
-    />
+      />
         </BrowserRouter>
+      </SnippetsProvider>
         </SearchProvider>
       
       </AuthProvider>
