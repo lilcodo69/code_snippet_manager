@@ -1,13 +1,13 @@
 
-# CodeKeep AI: The Intelligent Code Snippet Manager
+# CodeStash AI: The Intelligent Code Snippet Manager
 
-CodeKeep AI is a full-stack application designed to be an intelligent code vault for developers. It directly tackles the laborious task of writing boilerplate code by providing a centralized platform to save, find, and refine snippets. Going beyond simple storage, CodeStash AI uses ai enabled semantic search to help you find code based on its *functionality*, not just keywords. It also integrates an AI-powered review system to instantly analyze your snippets, identify potential bugs, and suggest more robust implementations.
+CodeStash AI is a full-stack application designed to be an intelligent code vault for developers. It directly tackles the laborious task of writing boilerplate code by providing a centralized platform to save, find, and refine snippets. Going beyond simple storage, CodeStash AI uses ai enabled semantic search to help you find code based on its *functionality*, not just keywords. It also integrates an AI-powered review system to instantly analyze your snippets, identify potential bugs, and suggest more robust implementations.
 
 <br>
 
 ## Live Demo
 
-**[Link to your live deployed application]**
+**[CodeStash]**(https://codestashin.netlify.app)
 
 <br>
 
