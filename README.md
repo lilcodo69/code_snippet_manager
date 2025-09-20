@@ -15,27 +15,35 @@ CodeStash AI is a full-stack application designed to be an intelligent code vaul
 
 ## Key Features in Action
 
-### AI-Powered Semantic Search
+# Key Features in Action
+
+## AI-Powered Semantic Search
 Find snippets based on *what they do*, not just the words you use. Ask "how to make a network request in React" and find your custom hook instantly.
 
-`![Semantic Search GIF]`
-<img src="docs/pin.gif" alt="Pinning Snippet GIF" width="500" height="200" />
+<div align="center">
+  <img src="docs/search.gif" alt="AI-Powered Semantic Search Demo" width="500" height="400" />
+</div>
 
-
-### Automated AI Code Review
+## Automated AI Code Review
 Get instant feedback on your code. Our integrated AI, powered by the Google Gemini API, identifies potential bugs, highlights security risks, and suggests improvements on demand.
 
-`![AI Code Review GIF](docs/ai.gif)`
+<div align="center">
+  <img src="docs/ai.gif" alt="AI Code Review Demo" width="500" height="400" />
+</div>
 
-### Create, Edit, and Organize with Ease
+## Create, Edit, and Organize with Ease
 A clean and intuitive interface for managing your code. Create new snippets, add language-specific notes with Markdown support, and edit with full syntax highlighting.
 
-`![Create and Edit GIF](docs/createSnippet.gif)`
+<div align="center">
+  <img src="docs/createSnippet.gif" alt="Create and Edit Snippets Demo" width="500" height="400" />
+</div>
 
-### Pin Your Favorites
+## Pin Your Favorites
 Keep your most-used snippets just a click away. Pin and unpin snippets for quick access right from your dashboard.
 
-`![Pinning Snippet GIF](docs/pin.gif)`
+<div align="center">
+  <img src="docs/pin.gif" alt="Pin Snippets Demo" width="500" height="400" />
+</div>
 
 ---
 
