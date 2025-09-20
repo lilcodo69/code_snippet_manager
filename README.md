@@ -30,14 +30,12 @@ Get instant feedback on your code. Our integrated AI, powered by the Google Gemi
 ### Create, Edit, and Organize with Ease
 A clean and intuitive interface for managing your code. Create new snippets, add language-specific notes with Markdown support, and edit with full syntax highlighting.
 
-*(Placeholder for your Creating/Editing a Snippet GIF)*
 `![Create and Edit GIF](docs/createSnippet.gif)`
 `![Create and Edit GIF](docs/createSnippet.gif)`
 
 ### Pin Your Favorites
 Keep your most-used snippets just a click away. Pin and unpin snippets for quick access right from your dashboard.
 
-*(Placeholder for your Pinning Snippet GIF)*
 `![Pinning Snippet GIF](docs/pin.gif)`
 `![Pinning Snippet GIF](docs/pin.gif)`
 
