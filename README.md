@@ -18,7 +18,9 @@ CodeStash AI is a full-stack application designed to be an intelligent code vaul
 ### AI-Powered Semantic Search
 Find snippets based on *what they do*, not just the words you use. Ask "how to make a network request in React" and find your custom hook instantly.
 
-`![Semantic Search GIF](docs/search.gif)`
+`![Semantic Search GIF]`
+<img src="docs/pin.gif" alt="Pinning Snippet GIF" width="500" height="200" />
+
 
 ### Automated AI Code Review
 Get instant feedback on your code. Our integrated AI, powered by the Google Gemini API, identifies potential bugs, highlights security risks, and suggests improvements on demand.
