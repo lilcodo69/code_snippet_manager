@@ -13,7 +13,7 @@ CodeStash AI is a full-stack application designed to be an intelligent code vaul
 
 ---
 
-## Key Features in Action
+
 
 # Key Features in Action
 
