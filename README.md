@@ -96,14 +96,14 @@ The project maintains a clear separation between client-side code (`/src`), serv
 
 ---
 
-## Getting Started
+## Getting Started with Docker (Recommended)
 
-To get a local copy up and running, follow these simple steps.
+This is the easiest and most reliable way to run the project locally. It ensures a consistent development environment.
 
 ### Prerequisites
 
--   Node.js (v18 or later)
--   Supabase CLI (for local edge function development)
+-   [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+-   [Git](https://git-scm.com/) installed.
 
 ### Installation
 
@@ -113,23 +113,55 @@ To get a local copy up and running, follow these simple steps.
     cd code-snippet-manager
     ```
 
-2.  **Install dependencies:**
-    ```sh
-    npm install
-    ```
-
-3.  **Set up your environment variables:**
-    Create a `.env.local` file in the root of the project. You can get these values from your Supabase and Google AI project dashboards.
+2.  **Set up your environment variables:**
+    Create a `.env.local` file in the root of the project. This file is securely ignored by git. You can get these values from your Supabase and Google AI project dashboards.
 
     ```env
+    # .env.local
     VITE_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
     VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
     GOOGLE_API_KEY=YOUR_GOOGLE_AI_API_KEY
     ```
+    *Note: The Supabase functions (`/supabase/functions`) are part of this repository but are developed and deployed separately via the Supabase CLI, not managed by this Docker setup.*
 
-4.  **Run the development server:**
+3.  **Build and Run the Docker Container:**
+    From the root directory, run these two commands:
+
+    *   First, build the Docker image (a one-time process):
+        ```sh
+        docker build -t codestash-app .
+        ```
+    *   Then, run the container:
+        ```sh
+        docker run --rm -p 5173:5173 -v ./src:/app/src -v ./.env.local:/app/.env.local --name codestash-dev codestash-app
+        ```
+
+    Once the build is complete and the container is running, the application will be available at **`http://localhost:5173`**. The `-v ./src:/app/src` flag enables hot-reloading for development.
+
+---
+
+## Manual Installation
+
+If you prefer not to use Docker, you can run the project natively on your machine.
+
+### Prerequisites
+
+-   Node.js (v20 or later recommended)
+
+### Installation
+
+1.  **Clone and install dependencies:**
+    ```sh
+    git clone https://github.com/your-username/code-snippet-manager.git
+    cd code-snippet-manager
+    npm install
+    ```
+
+2.  **Set up your environment variables:**
+    Create a `.env.local` file in the root directory and add your Supabase and Google AI keys as described in the Docker setup above.
+
+3.  **Run the development server:**
     ```sh
     npm run dev
     ```
-    The application should now be running on `http://localhost:5173`.
-
+    The application will now be running on `http://localhost:5173` (or the next available port).
