@@ -13,7 +13,7 @@ CodeStash AI is a full-stack application designed to be an intelligent code vaul
 
 ---
 
-## Key Features in Action
+
 
 # Key Features in Action
 
@@ -24,7 +24,7 @@ Find snippets based on *what they do*, not just the words you use. Ask "how to m
   <img src="docs/search.gif" alt="AI-Powered Semantic Search Demo" width="500" height="400" />
 </div>
 
-## Automated AI Code Review
+## On-Demand AI Code Review
 Get instant feedback on your code. Our integrated AI, powered by the Google Gemini API, identifies potential bugs, highlights security risks, and suggests improvements on demand.
 
 <div align="center">
