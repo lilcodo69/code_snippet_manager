@@ -7,6 +7,7 @@ import { useDeleteSnippet } from "../../hooks/useDeleteSnippet";
 import { useUpdateSnippet } from "../../hooks/useUpdateSnippet";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ConfirmModal } from "../ConfirmModal";
 
 interface SnippetCardProps {
   snippet: CodeSnippet;
@@ -15,14 +16,17 @@ interface SnippetCardProps {
 export const SnippetCard = ({ snippet }: SnippetCardProps) => {
   const { mutate: deleteSnippet } = useDeleteSnippet();
   const { mutate: updatePinStatus } = useUpdateSnippet();
+  const [snippetToDelete, setSnippetToDelete] = useState<string | null>(null);
+  const [isOpend, setIsOpend]=  useState(false);
   const [isPinned, setIsPinned] = useState(snippet.is_pinned);
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDelete = (e: React.MouseEvent,snippetId: string) => {
     e.stopPropagation();
-    if (window.confirm("Are you sure?")) {
-      deleteSnippet(snippet.id);
-    }
-  };
+    setIsOpend(true);
+
+
+setSnippetToDelete(snippetId); 
+ };
 
   const handlePin = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -46,6 +50,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
 
 
   return (
+<>
     <Modal>
       <Modal.Open opens={`view-snippet-${snippet.id}`}>
         <div
@@ -98,7 +103,7 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
               </Modal.Open>
 
               <button
-                onClick={handleDelete}
+                onClick={(e) => handleDelete(e, snippet.id)}
                 className=" border-zinc-400 transition-colors duration-350 ease-in-out px-2 border-2 hover:text-red-500 rounded-lg font-semibold"
               >
                 Remove
@@ -112,5 +117,15 @@ export const SnippetCard = ({ snippet }: SnippetCardProps) => {
         <SnippetView snippet={snippet} />
       </Modal.Window>
     </Modal>
+
+    <ConfirmModal isOpen={isOpend} title="Delete Snippet" message="Are you sure you want to delete this snippet?"onConfirm={() => {
+    if (snippetToDelete) {
+      deleteSnippet(snippetToDelete);
+      
+      setSnippetToDelete(null); 
+      setIsOpend(false); 
+    }
+  }} onCancel={() => setIsOpend(false)}   confirmText="Delete"/>
+    </>
   );
 };
